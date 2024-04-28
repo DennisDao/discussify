@@ -1,38 +1,243 @@
-.App {
-  text-align: center;
+*, *::before,*::after {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  margin: 0;
+  padding: 0;
+  border: 0 solid transparent;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1;
+  text-rendering: optimizeSpeed;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+button, [role="button"] {
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+[type=date],
+[type=datetime],
+[type=datetime-local],
+[type=email],
+[type=month],
+[type=number],
+[type=password],
+[type=search],
+[type=tel],
+[type=text],
+[type=time],
+[type=url],
+[type=week],
+textarea,
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+}
+
+::-moz-placeholder {
+  opacity: 1;
+}
+
+textarea {
+  vertical-align: top;
+  overflow: auto;
+}
+
+[type='checkbox'],
+[type='radio'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+@keyframes wobble {
+  0% { transform: translateX(0%); }
+  15% { transform: translateX(-25%) rotate(-5deg); }
+  30% { transform: translateX(20%) rotate(3deg); }
+  45% { transform: translateX(-15%) rotate(-3deg); }
+  60% { transform: translateX(10%) rotate(2deg); }
+  75% { transform: translateX(-5%) rotate(-1deg); }
+  100% { transform: translateX(0%); }
+}
+
+@keyframes wobbleSlow {
+  0% { transform: translateX(0%) rotate(0deg); }
+  15% { transform: translateX(-10%) rotate(-3deg); }
+  30% { transform: translateX(8%) rotate(2deg); }
+  45% { transform: translateX(-6%) rotate(-2deg); }
+  60% { transform: translateX(4%) rotate(1deg); }
+  75% { transform: translateX(-2%) rotate(-1deg); }
+  100% { transform: translateX(0%) rotate(0deg); }
+}
+
+body{
+  background: #262D34;
+}
+
+.side-feed{
+  padding: 20px;
+  padding-top: 0px;
+}
+
+.input-dark{
+  background: #2C353D;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.input-dark ::-webkit-input-placeholder {
+  color: #858EAD !important;
+}
+.input-dark :-moz-placeholder {
+  color: #858EAD !important;
+
+}
+.input-dark ::-moz-placeholder {
+  color: #858EAD !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+input{
+  background: #2C353D;
+  color: white;
+}
+
+input::-webkit-input-placeholder {
+  color: #858EAD !important;
+}
+input :-moz-placeholder {
+  color: #858EAD !important;
+
+}
+input ::-moz-placeholder {
+  color: #858EAD !important;
+}
+
+.ant-card{
+  border: 1px solid #2C353D;
+  border-radius: 5px;
+  background: #2C353D;
+}
+
+.ant-avatar{
+  background: #262D34;
+}
+
+.orange-btn{
+  background: #FF4401;
+  color: white;
+  transition: background-color 0.2s ease;
+  transition: transform 0.5s;
+}
+
+.orange-btn:hover{
+  background: #262D34 !important;
+  color: #FF4401 !important;
+}
+
+.favourite-btn{
+  color: #171e24 !important;
+  margin-top: -15px;
+  padding: 0px;
+  font-size: 1.5rem;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+.favourite-btn:hover{
+  color: red !important;
+  animation: wobbleSlow 1s ease infinite; 
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background-color: #f50a0a;
+  border-radius: 50%;
+  animation: particleAnimation 2s infinite;
+}
+
+@keyframes particleAnimation {
+  0% {
+      transform: translate(0, 0);
   }
-  to {
-    transform: rotate(360deg);
+  100% {
+      transform: translate(300px, 300px);
   }
 }
+
+
