@@ -3,6 +3,7 @@
     bottom: 0;
     width: 100%;
     padding-bottom: 20px;
+    top:74%;
 }
 
 #text-editor-container{
@@ -10,4 +11,11 @@
     scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
     max-height: 200px;
+}
+
+#comment-container{
+    height: 65vh;
+    overflow-y: scroll; /* Show vertical scrollbar */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
 }

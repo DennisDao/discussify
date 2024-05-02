@@ -13,7 +13,7 @@ const Navigation = () => {
     <Row id='app-navbar' className='nav-bar'>
       <Col span={8} className='nav-bar-menu-left'>
       <Flex gap="middle" align="start" justify="space-between">
-          <Typography.Title level={3} style={{ color: '#FF571A', marginBottom: '0px', fontWeight: 'bold'  }} font>
+          <Typography.Title level={3} style={{ color: '#FF571A', marginBottom: '0px', fontWeight: 'bold'  }}>
             DISCUSSIFY
           </Typography.Title>
 
@@ -39,7 +39,6 @@ const Navigation = () => {
       <Input
             size="large"
             placeholder="Type here to search..."
-            hoverBorderColor="#ffffff"
             suffix={
             <Tooltip title="Search">
               <SearchOutlined style={{ color: 'white' }} />

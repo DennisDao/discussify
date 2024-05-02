@@ -1,6 +1,7 @@
 import { Row, Col,Card,Typography, Avatar, Flex,Input,Button,Image,Tag } from 'antd';
 import { OrderedListOutlined,CommentOutlined,UserOutlined,HeartFilled } from '@ant-design/icons';
 import Topic from '../../components/Topic/Topic.jsx';
+import  Navigation from '../../components/NavBar/Navbar.jsx'
 import svgStore from '../../store/svgStore.js';
 import '../../App.css';
 
@@ -33,8 +34,11 @@ const css5Svg =
 const { Text, Link, Title } = Typography;
 
 const Home = () => {
+
+    console.log('Rendering home page');
     return (
         <>
+        <Navigation></Navigation>
         <Row className='side-feed'>
 
             <Col span={5} style={{ paddingRight: '15px' }} >

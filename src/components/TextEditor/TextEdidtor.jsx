@@ -1,5 +1,4 @@
 import React, { useState,useCallback  } from 'react';
-import { Divider } from 'antd';
 import { Editor,createEditor,Transforms, Text  } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { IconButton } from "@mui/material";
@@ -7,15 +6,11 @@ import {
   FormatBold,
   FormatItalic,
   FormatUnderlined,
-  Code
+  Code,
+  Save
 } from "@mui/icons-material";
 
-const initialValue = [
-    {
-      type: 'paragraph',
-      children: [{ text: 'A line of text in a paragraph.'}],
-    },
-  ]
+
 
   const CodeElement = props => {
     return (
@@ -39,8 +34,9 @@ const initialValue = [
       </span>)
   }
 
-const TextEditor = () => {
+const TextEditor = ({isReadOnly, showToolBar, comment = [], onCommentAdded}) => {
     const [editor] = useState(() => withReact(createEditor()))
+    const [comment1, setComment] = useState();
 
     function changeMark(mark) {
         const [match] = Editor.nodes(editor, {
@@ -63,6 +59,11 @@ const TextEditor = () => {
           { type: match ? null : type },
           { match: (n) => Editor.isBlock(editor, n) }
         );
+      }
+
+      const AddComment = () => {
+        debugger;
+        onCommentAdded(comment1)
       }
     
       const renderElement = useCallback(props => {
@@ -105,6 +106,7 @@ const TextEditor = () => {
 
     return (
         <>
+           {showToolBar == true &&
             <div style={{ display: `flex` }}>
               <IconButton style={{ color: "grey" }}  onPointerDown={(e) => { changeMark("bold")}}>
                 <FormatBold />
@@ -121,9 +123,14 @@ const TextEditor = () => {
               <IconButton style={{ color: "grey" }} onPointerDown={(e) => { changeType("code")}}>
                 <Code />
               </IconButton>
+
+              <IconButton style={{ color: "grey" }}  onPointerDown={(e) => { AddComment()}}>
+                <Save />
+              </IconButton>
             </div>
+          }
  
-          <Slate editor={editor} initialValue={initialValue}   onChange={value => {
+          <Slate editor={editor} initialValue={comment}  onChange={value => {
                 const isAstChange = editor.operations.some(
                   op => 'set_selection' !== op.type
                 )
@@ -131,19 +138,20 @@ const TextEditor = () => {
                   // Save the value to Local Storage.
                   const content = JSON.stringify(value)
                   localStorage.setItem('content', content)
-                  console.log(content);
+                  setComment(value);
                 }
               }}>
-            <Editable 
-              onKeyDown={onKeyDown} 
-              renderLeaf={renderElement}   
-              style={{
-                backgroundColor: '#2C353D',
-                minHeight: '100px',
-                outline: "none",
-                color: "#ffffff"
-              }}
-            />
+              <Editable 
+                onKeyDown={onKeyDown} 
+                renderLeaf={renderElement}   
+                style={{
+                  backgroundColor: '#2C353D',
+                  minHeight: '100px',
+                  outline: "none",
+                  color: "#ffffff"
+                }}
+                readOnly={isReadOnly}
+              />
           </Slate>
         </>
     );
