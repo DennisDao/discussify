@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Typography, Button, Flex, Input } from 'antd';
-import { AuthData } from '../../service/authService.jsx';
+import  useAuthService  from '../../service/authService.jsx';
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
     console.log('Rendering login page');
+    const { login } = useAuthService();
     const navigate = useNavigate();
+
     const [passwordVisible, setPasswordVisible] = React.useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { login } = AuthData();
-
+   
     const handleLogin = async () => {
        await login(username, password);
        return navigate("/")

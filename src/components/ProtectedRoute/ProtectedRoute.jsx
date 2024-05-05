@@ -1,18 +1,20 @@
-import React, { useState,useEffect } from 'react';
-import { AuthData } from '../../service/authService.jsx';
+import React, { useState,useEffect,useMemo } from 'react';
+import  useAuthService  from '../../service/authService.jsx';
 import { Navigate, Outlet } from 'react-router-dom'
 
 
 const PrivateRoutes = () => {
 
-const { getToken } = AuthData();
+  const { getToken } = useAuthService();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-console.log('Protected Route --> Getting token...');
-let isAuthenticated = getToken() != null;
+  useMemo(() => {
+    setIsAuthenticated(getToken() != null)
+}, [isAuthenticated]);
 
-return (
-    isAuthenticated ? <Outlet/> : <Navigate to='/login'/>
-  )
+  return (
+      isAuthenticated ?  <Outlet/> : <Navigate to='/login'/> 
+    )
 }
 
 export default PrivateRoutes

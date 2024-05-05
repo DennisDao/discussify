@@ -1,9 +1,11 @@
+import React, { useState,useEffect } from 'react';
 import { Row, Col,Card,Typography, Avatar, Flex,Input,Button,Image,Tag } from 'antd';
 import { OrderedListOutlined,CommentOutlined,UserOutlined,HeartFilled } from '@ant-design/icons';
 import Topic from '../../components/Topic/Topic.jsx';
 import  Navigation from '../../components/NavBar/Navbar.jsx'
-import svgStore from '../../store/svgStore.js';
 import '../../App.css';
+import useApiService  from '../../service/apiService.jsx'
+import useAuthService from '../../service/authService.jsx';
 
 const JavascriptSvg = 
 <svg viewBox="0 0 128 128" style={{ height: "30px"  }}>
@@ -35,7 +37,26 @@ const { Text, Link, Title } = Typography;
 
 const Home = () => {
 
+    const { getToken } = useAuthService();
+    const [data, setData] = useState(null);
     console.log('Rendering home page');
+    const apiService = useApiService();
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            const result = await apiService.get('http://localhost:6819/WeatherForecast');
+            setData(result);
+        };
+    
+        fetchData();
+    
+        // Clear the bearer token when component unmounts or when no longer needed
+        return () => {
+          // ApiService.clearAuthToken();
+        };
+      }, []);
+
     return (
         <>
         <Navigation></Navigation>
