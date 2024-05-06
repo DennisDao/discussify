@@ -7,6 +7,10 @@ const useAuthService = () => {
   const [token, setToken] = useState();
   const [expiration, setExpiration] = useState();
   const [refreshToken, setRefreshToken] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [userId, setUserId] = useState();
+  const [avatar, setAvatar] = useState();
 
   const login = async (username, password) => {
     try {
@@ -34,16 +38,7 @@ const useAuthService = () => {
       }
 
       const data = await response.json();
-      const { token, expiration, refreshToken } = data;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("expiration", expiration);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      // Update token state
-      setToken(token);
-      setExpiration(expiration);
-      setRefreshToken(refreshToken);
+      setUserInfo(data);
 
       navigate("/");
     } catch (error) {
@@ -80,29 +75,41 @@ const useAuthService = () => {
       console.log("Token refreshed!");
 
       const data = await response.json();
-      const { token, expiration, refreshToken } = data;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("expiration", expiration);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      // Update token state
-      setToken(token);
-      setExpiration(expiration);
-      setRefreshToken(refreshToken);
+      setUserInfo(data);
     } catch (error) {
       console.error("refresh error:", error);
       throw error;
     }
   };
 
+  const setUserInfo = (data) => {
+    debugger;
+    localStorage.setItem("token", data?.token);
+    localStorage.setItem("expiration", data?.expiration);
+    localStorage.setItem("refreshToken", data?.refreshToken);
+    localStorage.setItem("firstName", data?.firstName);
+    localStorage.setItem("lastName", data?.lastName);
+    localStorage.setItem("userId", data?.userId);
+    localStorage.setItem("avatar", data?.avatar);
+
+    setToken(data?.token);
+    setExpiration(data?.expiration);
+    setRefreshToken(data?.refreshToken);
+    setFirstName(data?.firstName);
+    setLastName(data?.lastName);
+    setUserId(data?.userId);
+    setAvatar(data?.avatar);
+  };
+
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("expiration");
-    localStorage.removeItem("refreshToken");
+    localStorage.clear();
     setToken(null);
     setExpiration(null);
     setRefreshToken(null);
+    setFirstName(null);
+    setLastName(null);
+    setUserId(null);
+    setAvatar(null);
 
     navigate("/Login");
   };
@@ -117,7 +124,20 @@ const useAuthService = () => {
     return null;
   };
 
-  return { getToken, login, logout, refresh };
+  const getUserName = () => {
+    let firstName = localStorage.getItem("firstName");
+    let lastName = localStorage.getItem("lastName");
+    return `${firstName.charAt(0).toUpperCase() + firstName.slice(1)} ${lastName
+      .charAt(0)
+      .toUpperCase()}`;
+  };
+
+  const getAvatar = () => {
+    let avatar = `http://localhost:6819/${localStorage.getItem("avatar")}`;
+    return avatar;
+  };
+
+  return { getToken, login, logout, refresh, getUserName, getAvatar };
 };
 
 export default useAuthService;

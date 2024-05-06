@@ -3,6 +3,25 @@
     padding: 20px;
 }
 
+.ant-menu,
+.ant-sub-menu,
+.ant-menu-item{
+    background: #262D34;
+    color: #ffffff !important;
+}
+
+.ant-menu-item-active,
+.ant-menu,
+.ant-sub-menu,
+.ant-menu-item :hover{
+    background: #262D34 !important;
+}
+
+.ant-menu-submenu::after{
+    border-bottom-width: 0px;
+    border-bottom-color:  #262D34 !important;
+}
+
 .nav-bar-menu-left{
     padding-left: 10px;
     padding-right: 50px;
@@ -22,13 +41,3 @@
     color: #858EAD;
 }
 
-.input-dark ::-webkit-input-placeholder {
-    color: #858EAD !important;
-  }
-  .input-dark :-moz-placeholder {
-    color: #858EAD !important;
-  
-  }
-  .input-dark ::-moz-placeholder {
-    color: #858EAD !important;
-  }

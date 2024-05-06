@@ -16,34 +16,31 @@ import {
 
 const { Text } = Typography;
 
-const items = [
-  {
-    icon: (
-      <Button
-        shape="square"
-        size="large"
-        type="text"
-        className="nav-bar-button navbar-avatar-button"
-        style={{ fontSize: "1rem", color: "#FFFFFF" }}
-      >
-        <Avatar
-          src="/Assets/Users/dennis.png"
-          style={{ marginRight: "1rem" }}
-        />
-        <span>Dennis D</span>
-      </Button>
-    ),
-    children: [
-      {
-        key: "LOGOUT",
-        label: "Logout",
-      },
-    ],
-  },
-];
-
 const Navigation = () => {
-  const { logout } = useAuthService();
+  const { logout, getUserName, getAvatar } = useAuthService();
+
+  const items = [
+    {
+      icon: (
+        <Button
+          shape="square"
+          size="large"
+          type="text"
+          className="nav-bar-button navbar-avatar-button"
+          style={{ fontSize: "1rem", color: "#FFFFFF" }}
+        >
+          <Avatar src={getAvatar()} style={{ marginRight: "1rem" }} size={45} />
+          <span>{getUserName()}</span>
+        </Button>
+      ),
+      children: [
+        {
+          key: "LOGOUT",
+          label: "Logout",
+        },
+      ],
+    },
+  ];
 
   const handleMenuItemClick = async (item) => {
     switch (item.key) {

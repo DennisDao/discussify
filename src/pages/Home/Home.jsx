@@ -121,10 +121,9 @@ const css5Svg = (
 const { Text, Link, Title } = Typography;
 
 const Home = () => {
-  const { getToken } = useAuthService();
   const [data, setData] = useState(null);
-  console.log("Rendering home page");
   const apiService = useApiService();
+  const { getAvatar } = useAuthService();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -196,8 +195,8 @@ const Home = () => {
           <Card style={{ marginTop: 16 }}>
             <Flex align="center">
               <Avatar
-                size={{ xs: 24, sm: 32, md: 40, lg: 45, xl: 50, xxl: 55 }}
-                src="/Assets/Users/dennis.png"
+                size={{ xs: 24, sm: 32, md: 40, lg: 45, xl: 50, xxl: 60 }}
+                src={getAvatar()}
               />
 
               <Input
