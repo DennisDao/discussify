@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Row,
   Col,
@@ -10,18 +10,26 @@ import {
   Button,
   Image,
   Tag,
+  Modal,
+  Select,
+  theme,
+  message,
+  Upload,
 } from "antd";
 import {
   OrderedListOutlined,
   CommentOutlined,
   UserOutlined,
   HeartFilled,
+  PlusOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import Topic from "../../components/Topic/Topic.jsx";
 import Navigation from "../../components/NavBar/Navbar.jsx";
 import "../../App.css";
 import useApiService from "../../service/apiService.jsx";
 import useAuthService from "../../service/authService.jsx";
+import CreatePostModal from "../../components/Modal/CreatePostModal.jsx";
 
 const JavascriptSvg = (
   <svg viewBox="0 0 128 128" style={{ height: "30px" }}>
@@ -120,20 +128,29 @@ const css5Svg = (
 
 const { Text, Link, Title } = Typography;
 
+const tagInputStyle = {
+  width: 64,
+  height: 22,
+  marginInlineEnd: 8,
+  verticalAlign: "top",
+};
+
 const Home = () => {
-  const [data, setData] = useState(null);
+  const [post, setPost] = useState([]);
   const apiService = useApiService();
   const { getAvatar } = useAuthService();
+  const childRef = useRef();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await apiService.get(
-        "http://localhost:6819/WeatherForecast"
-      );
-      setData(result);
-    };
     fetchData();
   }, []);
+
+  const openModal = () => childRef.current.launchModal();
+
+  const fetchData = async () => {
+    const latestPost = await apiService.get("http://localhost:6819/api/Post");
+    setPost(latestPost);
+  };
 
   return (
     <>
@@ -192,237 +209,128 @@ const Home = () => {
         </Col>
 
         <Col span={19}>
-          <Card style={{ marginTop: 16 }}>
-            <Flex align="center">
-              <Avatar
-                size={{ xs: 24, sm: 32, md: 40, lg: 45, xl: 50, xxl: 60 }}
-                src={getAvatar()}
-              />
+          <Card style={{ marginTop: 16 }} key="create-post-control">
+            <Row>
+              <Col>
+                <Avatar size={50} src={getAvatar()} />
+              </Col>
 
-              <Input
-                size="large"
-                placeholder="Type here to share what's going on in your mind..."
-                className={"input-dark"}
-                variant="borderless"
-                style={{ marginLeft: 16 }}
-              />
+              <Col span={20}>
+                <Input
+                  size="large"
+                  placeholder="Type here to share what's going on in your mind..."
+                  className={"input-dark"}
+                  variant="borderless"
+                  style={{ marginLeft: 16 }}
+                />
+              </Col>
 
-              <Button
-                type="link"
-                style={{ marginLeft: 16 }}
-                className="orange-btn"
-              >
-                Create Post
-              </Button>
-            </Flex>
-          </Card>
-
-          <Card style={{ marginTop: 16 }}>
-            <Flex style={{ width: "100%" }}>
-              <Image
-                src="/Assets/code_1.jpg"
-                width={300}
-                height={200}
-                style={{ borderRadius: 20 }}
-              />
-
-              <div style={{ marginLeft: 16, width: "100%" }}>
-                <Flex justify="space-between" align="center">
-                  <Title
-                    level={4}
-                    style={{ color: "white", marginBottom: "10px" }}
-                  >
-                    C# Learn the fundemental of OOP in
-                  </Title>
-                  <Button type="text" className="favourite-btn">
-                    <HeartFilled />
-                  </Button>
-                </Flex>
-
-                <Flex gap="4px 0" wrap="wrap">
-                  <Tag color="#262D34">C#</Tag>
-                  <Tag color="#262D34">OOP</Tag>
-                  <Tag color="#262D34">Design</Tag>
-                </Flex>
-
-                <Flex
-                  style={{ marginTop: "25px", height: "50px" }}
-                  gap="0px 100px"
-                  justify="space-between"
+              <Col>
+                <Button
+                  type="link"
+                  style={{ marginLeft: 16 }}
+                  className="orange-btn"
+                  onClick={openModal}
                 >
-                  <Flex>
-                    <Avatar
-                      size={{ xs: 24, sm: 32, md: 40, lg: 45, xl: 50, xxl: 55 }}
-                      src="/Assets/Users/Kim.jpg"
-                      style={{ marginRight: "20px" }}
-                    />
-                    <Flex vertical={true} gap="5px 3px">
-                      <Text
-                        type="secondary"
-                        style={{ color: "white", fontWeight: "bold" }}
-                      >
-                        Kim J
-                      </Text>
-                      <Text type="secondary" style={{ color: "#858EAD" }}>
-                        1 week ago
-                      </Text>
-                    </Flex>
-                  </Flex>
-
-                  <Flex gap="0px 30px" align="center">
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      89 Views
-                    </Text>
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      10 Likes
-                    </Text>
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      8 Comments
-                    </Text>
-                  </Flex>
-                </Flex>
-              </div>
-            </Flex>
+                  Create Post
+                </Button>
+              </Col>
+            </Row>
           </Card>
 
-          <Card style={{ marginTop: 16 }}>
-            <Flex style={{ width: "100%" }}>
-              <Image
-                src="/Assets/post_1.png"
-                width={300}
-                height={200}
-                style={{ borderRadius: 20 }}
-              />
-
-              <div style={{ marginLeft: 16, width: "100%" }}>
-                <Flex justify="space-between" align="center">
-                  <Title
-                    level={4}
-                    style={{ color: "white", marginBottom: "10px" }}
-                  >
-                    Generative AI
-                  </Title>
-                  <Button type="text" className="favourite-btn">
-                    <HeartFilled />
-                  </Button>
-                </Flex>
-
-                <Flex gap="4px 0" wrap="wrap">
-                  <Tag color="#262D34">AI</Tag>
-                  <Tag color="#262D34">Machine Learning</Tag>
-                  <Tag color="#262D34">SQL</Tag>
-                  <Tag color="#262D34">Data structures</Tag>
-                </Flex>
-
-                <Flex
-                  style={{ marginTop: "25px", height: "50px" }}
-                  gap="0px 100px"
-                  justify="space-between"
-                >
-                  <Flex>
-                    <Avatar
-                      size={{ xs: 24, sm: 32, md: 40, lg: 45, xl: 50, xxl: 55 }}
-                      src="/Assets/Users/Jennie.jpg"
-                      style={{ marginRight: "20px" }}
+          {post.map((p, key) => {
+            return (
+              <>
+                <Card style={{ marginTop: 10 }} key={key}>
+                  <Flex style={{ width: "100%" }}>
+                    <Image
+                      src={p.imageUrl}
+                      width={300}
+                      height={200}
+                      style={{ borderRadius: 20 }}
                     />
-                    <Flex vertical={true} gap="5px 3px">
-                      <Text
-                        type="secondary"
-                        style={{ color: "white", fontWeight: "bold" }}
+
+                    <div style={{ marginLeft: 16, width: "100%" }}>
+                      <Flex justify="space-between" align="center">
+                        <Title
+                          level={4}
+                          style={{ color: "white", marginBottom: "5px" }}
+                        >
+                          {p.title}
+                        </Title>
+                        <Button type="text" className="favourite-btn">
+                          <HeartFilled />
+                        </Button>
+                      </Flex>
+
+                      <Text style={{ color: "#858EAD" }}>{p.description}</Text>
+
+                      <Flex
+                        gap="0px 0px"
+                        wrap="wrap"
+                        style={{ marginTop: "5px" }}
                       >
-                        Debbie B
-                      </Text>
-                      <Text type="secondary" style={{ color: "#858EAD" }}>
-                        1 week ago
-                      </Text>
-                    </Flex>
-                  </Flex>
+                        {p.tags.map((tag, key) => (
+                          <Tag key={key} color="#262D34">
+                            {tag}
+                          </Tag>
+                        ))}
+                      </Flex>
 
-                  <Flex gap="0px 30px" align="center">
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      89 Views
-                    </Text>
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      10 Likes
-                    </Text>
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      8 Comments
-                    </Text>
-                  </Flex>
-                </Flex>
-              </div>
-            </Flex>
-          </Card>
-
-          <Card style={{ marginTop: 16 }}>
-            <Flex style={{ width: "100%" }}>
-              <Image
-                src="/Assets/post_2.png"
-                width={300}
-                height={200}
-                style={{ borderRadius: 20 }}
-              />
-
-              <div style={{ marginLeft: 16, width: "100%" }}>
-                <Flex justify="space-between" align="center">
-                  <Title
-                    level={4}
-                    style={{ color: "white", marginBottom: "10px" }}
-                  >
-                    Ethical Hacking
-                  </Title>
-                  <Button type="text" className="favourite-btn">
-                    <HeartFilled />
-                  </Button>
-                </Flex>
-
-                <Flex gap="4px 0" wrap="wrap">
-                  <Tag color="#262D34">Kali Linux</Tag>
-                  <Tag color="#262D34">Pent Testing</Tag>
-                  <Tag color="#262D34">Metasploits</Tag>
-                </Flex>
-
-                <Flex
-                  style={{ marginTop: "25px", height: "50px" }}
-                  gap="0px 100px"
-                  justify="space-between"
-                >
-                  <Flex>
-                    <Avatar
-                      size={{ xs: 24, sm: 32, md: 40, lg: 50, xl: 50, xxl: 55 }}
-                      src="/Assets/Users/Hacker.jpg"
-                      style={{ marginRight: "20px" }}
-                    />
-                    <Flex vertical={true} gap="5px 3px">
-                      <Text
-                        type="secondary"
-                        style={{ color: "white", fontWeight: "bold" }}
+                      <Flex
+                        style={{ marginTop: "25px", height: "50px" }}
+                        gap="0px 100px"
+                        justify="space-between"
                       >
-                        Mr Hack
-                      </Text>
-                      <Text type="secondary" style={{ color: "#858EAD" }}>
-                        1 week ago
-                      </Text>
-                    </Flex>
-                  </Flex>
+                        <Flex>
+                          <Avatar
+                            size={{
+                              xs: 24,
+                              sm: 32,
+                              md: 40,
+                              lg: 45,
+                              xl: 50,
+                              xxl: 55,
+                            }}
+                            src={p.authorImageUrl}
+                            style={{ marginRight: "20px" }}
+                          />
+                          <Flex vertical={true} gap="5px 3px">
+                            <Text
+                              type="secondary"
+                              style={{ color: "white", fontWeight: "bold" }}
+                            >
+                              {p.authorName} {p.authorLastName}
+                            </Text>
+                            <Text type="secondary" style={{ color: "#858EAD" }}>
+                              {p.whenCreated}
+                            </Text>
+                          </Flex>
+                        </Flex>
 
-                  <Flex gap="0px 30px" align="center">
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      89 Views
-                    </Text>
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      10 Likes
-                    </Text>
-                    <Text type="secondary" style={{ color: "#858EAD" }}>
-                      8 Comments
-                    </Text>
+                        <Flex gap="0px 30px" align="center">
+                          <Text type="secondary" style={{ color: "#858EAD" }}>
+                            {p.totalViews} Views
+                          </Text>
+                          <Text type="secondary" style={{ color: "#858EAD" }}>
+                            {p.totalLikes} Likes
+                          </Text>
+                          <Text type="secondary" style={{ color: "#858EAD" }}>
+                            {p.totalComments} Comments
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </div>
                   </Flex>
-                </Flex>
-              </div>
-            </Flex>
-          </Card>
+                </Card>
+                ;
+              </>
+            );
+          })}
         </Col>
       </Row>
+
+      <CreatePostModal ref={childRef}></CreatePostModal>
     </>
   );
 };

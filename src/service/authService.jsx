@@ -133,11 +133,24 @@ const useAuthService = () => {
   };
 
   const getAvatar = () => {
-    let avatar = `http://localhost:6819/${localStorage.getItem("avatar")}`;
+    let avatar = localStorage.getItem("avatar");
     return avatar;
   };
 
-  return { getToken, login, logout, refresh, getUserName, getAvatar };
+  const getUserId = () => {
+    let userId = localStorage.getItem("userId");
+    return userId;
+  };
+
+  return {
+    getToken,
+    login,
+    logout,
+    refresh,
+    getUserName,
+    getAvatar,
+    getUserId,
+  };
 };
 
 export default useAuthService;

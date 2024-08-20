@@ -10,8 +10,8 @@ const useApiService = () => {
   };
 
   const get = async (url) => {
-    const data = await axios.get(url);
-    return data;
+    const response = await axios.get(url);
+    return response.data;
   };
 
   const post = async (url, data) => {
@@ -23,17 +23,29 @@ const useApiService = () => {
     }
   };
 
+  const postFormData = async (url, formData) => {
+    try {
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     // Configure the request interceptor
     const requestInterceptor = axios.interceptors.request.use((config) => {
-      debugger;
       // Retrieve token from local storage or any other storage mechanism
       const token = localStorage.getItem("token");
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
-        config.headers["Access-Control-Allow-Origin"] = "*";
-        config.headers["Access-Control-Allow-Methods"] =
-          "PUT, GET, POST, DELETE, OPTION";
+        //config.headers["Access-Control-Allow-Origin"] = "*";
+        //config.headers["Access-Control-Allow-Methods"] =
+        //"PUT, GET, POST, DELETE, OPTION";
       }
       return config;
     });
@@ -66,6 +78,7 @@ const useApiService = () => {
     setAuthToken,
     get,
     post,
+    postFormData,
   };
 };
 
