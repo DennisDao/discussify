@@ -14,8 +14,6 @@ import {
   AppstoreOutlined,
 } from "@ant-design/icons";
 
-const { Text } = Typography;
-
 const Navigation = () => {
   const { logout, getUserName, getAvatar } = useAuthService();
 

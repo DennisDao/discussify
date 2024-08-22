@@ -1,0 +1,54 @@
+.create-post-modal .ant-modal-content, .ant-modal-title
+{
+    background: #262D34 !important;
+    color: #858EAD !important;
+}
+
+.ant-select-selector {
+    background: #2C353D !important;
+    border: 1px solid #858EAD !important;
+    color: #858EAD !important;
+}
+
+.ant-select-arrow{
+    color: #858EAD !important;
+}
+
+.ant-upload-wrapper{
+    margin-top: 25px;
+}
+
+.upload-button{
+    border: 0;
+    background: "none";
+    color: #858EAD;
+}
+
+.ant-tag{
+   background: #262D34 !important;
+   border: 1px solid #858EAD !important;
+   color: #858EAD;
+}
+
+.ant-tag svg{
+    color: #858EAD;
+}
+
+.ant-input-sm{
+    background: #2C353D !important;
+    color: #858EAD;
+}
+
+.ant-modal-footer button:nth-of-type(2)
+{
+    background: #FF4401;
+    color: white;
+    transition: background-color 0.2s ease;
+    transition: transform 0.5s;
+}
+
+.ant-modal-footer button:nth-of-type(2):hover{
+    background: #262D34 !important;
+    color: #FF4401 !important;
+    border: 1px solid #FF4401;
+}

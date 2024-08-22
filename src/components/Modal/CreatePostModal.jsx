@@ -9,6 +9,7 @@ import { Flex, Input, Tag, Modal, Select, message, Upload, theme } from "antd";
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import useApiService from "../../service/apiService";
 import useAuthService from "../../service/authService";
+import "./CreatePostModal.css";
 
 const tagInputStyle = {
   width: 64,
@@ -143,7 +144,7 @@ const CreatePostModal = forwardRef((props, ref) => {
   };
 
   const uploadButton = (
-    <button style={{ border: 0, background: "none" }} type="button">
+    <button className="upload-button" type="button">
       {isUploading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
     </button>
@@ -188,6 +189,8 @@ const CreatePostModal = forwardRef((props, ref) => {
   return (
     <>
       <Modal
+        className="create-post-modal"
+        width={1020}
         title="Create Post"
         open={isModalOpen}
         onOk={handleOk}
@@ -242,7 +245,6 @@ const CreatePostModal = forwardRef((props, ref) => {
         </Flex>
 
         <Upload
-          style={{ marginTop: "30px" }}
           name="avatar"
           listType="picture-card"
           className="avatar-uploader"
