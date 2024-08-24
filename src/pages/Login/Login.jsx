@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Typography, Button, Flex, Input } from "antd";
 import useAuthService from "../../service/authService.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { login } = useAuthService();
+  const navigate = useNavigate();
 
   const [passwordVisible, setPasswordVisible] = React.useState(false);
   const [username, setUsername] = useState("");
@@ -47,7 +49,7 @@ const Login = () => {
           size="large"
           variant="borderless"
           className={"input-dark"}
-          placeholder="input password"
+          placeholder="Password"
           style={{ marginBottom: "15px", width: "400px" }}
           visibilityToggle={{
             visible: passwordVisible,
@@ -57,6 +59,14 @@ const Login = () => {
 
         <Button type="link" className="orange-btn" onClick={handleLogin}>
           Login
+        </Button>
+
+        <Button
+          type="link"
+          className="orange-btn"
+          onClick={() => navigate("/Register")}
+        >
+          Register
         </Button>
       </Flex>
     </>

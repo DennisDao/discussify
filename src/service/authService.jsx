@@ -28,6 +28,8 @@ const useAuthService = () => {
         body: raw,
       };
 
+      debugger;
+
       var response = await fetch(
         "http://localhost:6819/api/Auth/login",
         requestOptions
@@ -41,6 +43,42 @@ const useAuthService = () => {
       setUserInfo(data);
 
       navigate("/");
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    }
+  };
+
+  const register = async (email, firstname, lastname, password) => {
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      debugger;
+      const raw = JSON.stringify({
+        email: email,
+        firstName: firstname,
+        lastName: lastname,
+        password: password,
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+      };
+
+      var response = await fetch(
+        "http://localhost:6819/api/Accounts/Register",
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to register");
+      }
+
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -145,6 +183,7 @@ const useAuthService = () => {
   return {
     getToken,
     login,
+    register,
     logout,
     refresh,
     getUserName,
