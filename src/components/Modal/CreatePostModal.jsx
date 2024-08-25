@@ -22,6 +22,7 @@ const CreatePostModal = forwardRef((props, ref) => {
   const { getUserId } = useAuthService();
   const apiService = useApiService();
   const { token } = theme.useToken();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
@@ -32,6 +33,8 @@ const CreatePostModal = forwardRef((props, ref) => {
   const [isUploading, setIsUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const [tags, setTags] = useState([]);
+  const [image, setImage] = useState(null);
+
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -126,7 +129,7 @@ const CreatePostModal = forwardRef((props, ref) => {
     setTagInputValue("");
   };
 
-  const handleOk = async () => {
+  const handleCreatePost = async () => {
     var data = {
       userId: getUserId(),
       title: title,
@@ -135,10 +138,14 @@ const CreatePostModal = forwardRef((props, ref) => {
       tags: tags,
     };
 
-    const latestPost = await apiService.post(
+    const response = await apiService.post(
       "http://localhost:6819/api/Post",
       data
     );
+
+    if (response.postId != null && image != null) {
+      await uploadPostImage(response.postId);
+    }
 
     setIsModalOpen(false);
   };
@@ -169,21 +176,25 @@ const CreatePostModal = forwardRef((props, ref) => {
   };
 
   const handleUploadChange = async (info) => {
+    getBase64(info.file.originFileObj, (url) => {
+      setImageUrl(url);
+      setImage(info);
+    });
+  };
+
+  const uploadPostImage = async (postId) => {
     if (isUploading) return;
 
     setIsUploading(true);
+
     const formData = new FormData();
-    formData.append("image", info.file.originFileObj);
-    console.log(info.file.originFileObj);
+    formData.append("image", image.file.originFileObj);
     var response = await apiService.postFormData(
-      "http://localhost:6819/api/Post/UploadImage?postId=43",
+      `http://localhost:6819/api/Post/UploadImage?postId=${postId}`,
       formData
     );
 
-    getBase64(info.file.originFileObj, (url) => {
-      setIsUploading(false);
-      setImageUrl(url);
-    });
+    setIsUploading(false);
   };
 
   return (
@@ -193,7 +204,7 @@ const CreatePostModal = forwardRef((props, ref) => {
         width={1020}
         title="Create Post"
         open={isModalOpen}
-        onOk={handleOk}
+        onOk={handleCreatePost}
         onCancel={handleCancel}
       >
         <Input

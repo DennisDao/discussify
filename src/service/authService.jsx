@@ -28,8 +28,6 @@ const useAuthService = () => {
         body: raw,
       };
 
-      debugger;
-
       var response = await fetch(
         "http://localhost:6819/api/Auth/login",
         requestOptions
@@ -121,7 +119,6 @@ const useAuthService = () => {
   };
 
   const setUserInfo = (data) => {
-    debugger;
     localStorage.setItem("token", data?.token);
     localStorage.setItem("expiration", data?.expiration);
     localStorage.setItem("refreshToken", data?.refreshToken);
