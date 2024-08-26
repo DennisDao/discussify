@@ -252,12 +252,17 @@ const Home = () => {
 
                     <div style={{ marginLeft: 16, width: "100%" }}>
                       <Flex justify="space-between" align="center">
-                        <Title
-                          level={4}
-                          style={{ color: "white", marginBottom: "5px" }}
+                        <Link
+                          href={`/Post/${p.postId}`}
+                          style={{
+                            color: "white",
+                            marginBottom: "5px",
+                            fontSize: "20px",
+                            fontWeight: "bold",
+                          }}
                         >
                           {p.title}
-                        </Title>
+                        </Link>
                         <Button type="text" className="favourite-btn">
                           <HeartFilled />
                         </Button>
