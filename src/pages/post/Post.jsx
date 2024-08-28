@@ -19,7 +19,7 @@ const usercomment = [
 const Post = () => {
   const { id } = useParams();
   const apiService = useApiService();
-  const { getUserId, getAvatar } = useAuthService();
+  const { getUserId, getAvatar, getUserName } = useAuthService();
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
@@ -36,6 +36,7 @@ const Post = () => {
         comment: JSON.parse(item.content),
         authorImage: item.authorImageUrl,
         whenCreated: item.whenCreated,
+        authorName: item.authorName,
       };
     });
 
@@ -59,6 +60,7 @@ const Post = () => {
       comment: comment,
       authorImage: getAvatar(),
       whenCreated: "Now",
+      authorName: getUserName(),
     };
 
     setComments([...comments, newComment]);
@@ -72,17 +74,22 @@ const Post = () => {
         <Col span={12} id="comment-container">
           {comments.map((comment, index) => (
             <Card style={{ marginTop: 16 }}>
-              <Row>
+              <Row style={{ marginBottom: "10px" }}>
                 <Flex
                   justify="space-between"
                   align="flex-start"
                   style={{ width: "100%" }}
                 >
-                  <Avatar
-                    size={{ xs: 24, sm: 32, md: 40, lg: 45, xl: 50, xxl: 55 }}
-                    src={comment.authorImage}
-                    style={{ marginRight: "20px" }}
-                  />
+                  <Flex>
+                    <Avatar
+                      size={{ xs: 24, sm: 32, md: 40, lg: 45, xl: 50, xxl: 55 }}
+                      src={comment.authorImage}
+                      style={{ marginRight: "20px" }}
+                    />
+                    <Text style={{ color: "#858EAD" }}>
+                      {comment.authorName}
+                    </Text>
+                  </Flex>
 
                   <Text style={{ color: "#858EAD" }}>
                     {comment.whenCreated}

@@ -51,7 +51,7 @@ const Register = () => {
 
   const uploadAvatar = async (userId) => {
     const formData = new FormData();
-    formData.append("avatar", image.file.originFileObj);
+    formData.append("image", image.file.originFileObj);
 
     var response = await apiService.postFormData(
       `http://localhost:6819/api/Accounts/avatar?userId=${userId}`,
