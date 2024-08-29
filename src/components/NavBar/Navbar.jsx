@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import { Row, Col, Menu } from "antd";
 import useAuthService from "../../service/authService.jsx";
+import { useNavigate } from "react-router-dom";
 import { Avatar, Input, Tooltip, Typography, Button, Flex, Image } from "antd";
 import {
   ClockCircleOutlined,
@@ -11,11 +12,13 @@ import {
   UserOutlined,
   MessageOutlined,
   BellOutlined,
-  AppstoreOutlined,
 } from "@ant-design/icons";
 
 const Navigation = () => {
   const { logout, getUserName, getAvatar } = useAuthService();
+  const navigate = useNavigate();
+
+  const [query, setQuery] = useState("");
 
   const items = [
     {
@@ -39,6 +42,12 @@ const Navigation = () => {
       ],
     },
   ];
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      navigate(`/QuickSearch?query=${query}`);
+    }
+  };
 
   const handleMenuItemClick = async (item) => {
     switch (item.key) {
@@ -107,10 +116,15 @@ const Navigation = () => {
 
         <Col span={8}>
           <Input
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             size="large"
             placeholder="Type here to search..."
             suffix={
-              <Tooltip title="Search">
+              <Tooltip
+                title="Search"
+                onClick={() => navigate(`/QuickSearch?query=${query}`)}
+              >
                 <SearchOutlined style={{ color: "white" }} />
               </Tooltip>
             }
