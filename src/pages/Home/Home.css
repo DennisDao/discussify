@@ -1,0 +1,26 @@
+.create-post-container{
+    align-items: center;
+    display: flex;
+}
+
+.ant-pagination-item{
+    background: #2C353D;
+}
+
+.ant-pagination-item a{
+    color: #858EAD !important;
+}
+
+.ant-pagination-item-active{
+    background: #FF4401 !important;
+    border-color: #2C353D !important;
+}
+
+.ant-pagination-item-active a {
+    color: white !important;
+    border-color: transparent;
+}
+
+.ant-pagination-item-link{
+    color: #858EAD !important;
+}

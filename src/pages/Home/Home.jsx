@@ -25,6 +25,7 @@ import {
 import Topic from "../../components/Topic/Topic.jsx";
 import Navigation from "../../components/NavBar/Navbar.jsx";
 import "../../App.css";
+import "./Home.css";
 import useApiService from "../../service/apiService.jsx";
 import useAuthService from "../../service/authService.jsx";
 import CreatePostModal from "../../components/Modal/CreatePostModal.jsx";
@@ -97,7 +98,7 @@ const Home = () => {
 
         <Col span={19}>
           <Card style={{ marginTop: 16 }} key="create-post-control">
-            <Row>
+            <Row className="create-post-container">
               <Col>
                 <Avatar size={50} src={getAvatar()} />
               </Col>
@@ -254,6 +255,8 @@ const Home = () => {
         defaultCurrent={1}
         defaultPageSize={4}
         total={totalPost}
+        itemBg=""
+        itemActiveBg="#FF4401"
         onChange={handlePaginationChanged}
         style={{ position: "absolute", left: "50%", top: "95%" }}
       />
