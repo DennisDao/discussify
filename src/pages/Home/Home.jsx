@@ -10,12 +10,17 @@ import {
   Button,
   Image,
   Tag,
+  Space,
+  Pagination,
 } from "antd";
 import {
   OrderedListOutlined,
   CommentOutlined,
   UserOutlined,
   HeartFilled,
+  StarOutlined,
+  LikeOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
 import Topic from "../../components/Topic/Topic.jsx";
 import Navigation from "../../components/NavBar/Navbar.jsx";
@@ -27,8 +32,16 @@ import CategoriesCard from "../../components/Topic/CategoriesCard.jsx";
 
 const { Text, Link, Title } = Typography;
 
+const IconText = ({ icon, text }) => (
+  <Space>
+    {React.createElement(icon)}
+    {text}
+  </Space>
+);
+
 const Home = () => {
   const [post, setPost] = useState([]);
+  const [totalPost, setTotalPost] = useState([]);
   const apiService = useApiService();
   const { getAvatar } = useAuthService();
   const childRef = useRef();
@@ -41,6 +54,18 @@ const Home = () => {
 
   const fetchData = async () => {
     const latestPost = await apiService.get("http://localhost:6819/api/Post");
+    setPost(latestPost);
+
+    const totalPost = await apiService.get(
+      "http://localhost:6819/api/Post/GetTotalPost"
+    );
+    setTotalPost(totalPost);
+  };
+
+  const handlePaginationChanged = async (pageNumber, pageSize) => {
+    const latestPost = await apiService.get(
+      `http://localhost:6819/api/Post?pageNumber=${pageNumber}`
+    );
     setPost(latestPost);
   };
 
@@ -100,102 +125,138 @@ const Home = () => {
             </Row>
           </Card>
 
-          {post.map((p, key) => {
-            return (
-              <>
-                <Card style={{ marginTop: 10 }} key={key}>
-                  <Flex style={{ width: "100%" }}>
-                    <Image
-                      src={p.imageUrl}
-                      width={300}
-                      height={200}
-                      style={{ borderRadius: 20 }}
-                    />
+          <Row
+            style={{
+              height: "auto",
+              maxHeight: "75vh",
+            }}
+            className="scroll-container"
+          >
+            {post.map((p, key) => {
+              return (
+                <>
+                  <Card style={{ marginTop: 10, width: "100%" }} key={key}>
+                    <Flex>
+                      <Image
+                        src={p.imageUrl}
+                        width={300}
+                        height={200}
+                        style={{ borderRadius: 20 }}
+                      />
 
-                    <div style={{ marginLeft: 16, width: "100%" }}>
-                      <Flex justify="space-between" align="center">
-                        <Link
-                          href={`/Post/${p.postId}`}
-                          style={{
-                            color: "white",
-                            marginBottom: "5px",
-                            fontSize: "20px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {p.title}
-                        </Link>
-                        <Button type="text" className="favourite-btn">
-                          <HeartFilled />
-                        </Button>
-                      </Flex>
-
-                      <Text style={{ color: "#858EAD" }}>{p.description}</Text>
-
-                      <Flex
-                        gap="0px 0px"
-                        wrap="wrap"
-                        style={{ marginTop: "5px" }}
-                      >
-                        {p.tags.map((tag, key) => (
-                          <Tag key={key} color="#262D34">
-                            {tag}
-                          </Tag>
-                        ))}
-                      </Flex>
-
-                      <Flex
-                        style={{ marginTop: "25px", height: "50px" }}
-                        gap="0px 100px"
-                        justify="space-between"
-                      >
-                        <Flex>
-                          <Avatar
-                            size={{
-                              xs: 24,
-                              sm: 32,
-                              md: 40,
-                              lg: 45,
-                              xl: 50,
-                              xxl: 55,
+                      <div style={{ marginLeft: 16, width: "100%" }}>
+                        <Flex justify="space-between" align="center">
+                          <Link
+                            href={`/Post/${p.postId}`}
+                            style={{
+                              color: "white",
+                              marginBottom: "5px",
+                              fontSize: "20px",
+                              fontWeight: "bold",
                             }}
-                            src={p.authorImageUrl}
-                            style={{ marginRight: "20px" }}
-                          />
-                          <Flex vertical={true} gap="5px 3px">
-                            <Text
-                              type="secondary"
-                              style={{ color: "white", fontWeight: "bold" }}
-                            >
-                              {p.authorName} {p.authorLastName}
-                            </Text>
-                            <Text type="secondary" style={{ color: "#858EAD" }}>
-                              {p.whenCreated}
-                            </Text>
+                          >
+                            {p.title}
+                          </Link>
+                          <Button type="text" className="favourite-btn">
+                            <HeartFilled />
+                          </Button>
+                        </Flex>
+
+                        <Text style={{ color: "#858EAD" }}>
+                          {p.description}
+                        </Text>
+
+                        <Flex
+                          gap="0px 0px"
+                          wrap="wrap"
+                          style={{ marginTop: "5px" }}
+                        >
+                          {p.tags.map((tag, key) => (
+                            <Tag key={key} color="#262D34">
+                              {tag}
+                            </Tag>
+                          ))}
+                        </Flex>
+
+                        <Flex
+                          style={{ marginTop: "25px", height: "50px" }}
+                          gap="0px 100px"
+                          justify="space-between"
+                        >
+                          <Flex>
+                            <Avatar
+                              size={{
+                                xs: 24,
+                                sm: 32,
+                                md: 40,
+                                lg: 45,
+                                xl: 50,
+                                xxl: 55,
+                              }}
+                              src={p.authorImageUrl}
+                              style={{ marginRight: "20px" }}
+                            />
+                            <Flex vertical={true} gap="5px 3px">
+                              <Text
+                                type="secondary"
+                                style={{ color: "white", fontWeight: "bold" }}
+                              >
+                                {p.authorName} {p.authorLastName}
+                              </Text>
+                              <Text
+                                type="secondary"
+                                style={{ color: "#858EAD" }}
+                              >
+                                {p.whenCreated}
+                              </Text>
+                            </Flex>
+                          </Flex>
+
+                          <Flex
+                            gap="10px"
+                            align="center"
+                            style={{
+                              marginRight: "15px",
+                              color: "rgb(133, 142, 173)",
+                            }}
+                          >
+                            <IconText
+                              icon={StarOutlined}
+                              text="156"
+                              key="list-vertical-star-o"
+                            />
+
+                            <IconText
+                              icon={LikeOutlined}
+                              text="156"
+                              key="list-vertical-like-o"
+                            />
+
+                            <IconText
+                              icon={MessageOutlined}
+                              text={p.totalComments}
+                              key="list-vertical-message"
+                            />
                           </Flex>
                         </Flex>
-
-                        <Flex gap="0px 30px" align="center">
-                          <Text type="secondary" style={{ color: "#858EAD" }}>
-                            {p.totalViews} Views
-                          </Text>
-                          <Text type="secondary" style={{ color: "#858EAD" }}>
-                            {p.totalLikes} Likes
-                          </Text>
-                          <Text type="secondary" style={{ color: "#858EAD" }}>
-                            {p.totalComments} Comments
-                          </Text>
-                        </Flex>
-                      </Flex>
-                    </div>
-                  </Flex>
-                </Card>
-                ;
-              </>
-            );
-          })}
+                      </div>
+                    </Flex>
+                  </Card>
+                </>
+              );
+            })}
+          </Row>
         </Col>
       </Row>
+
+      <Pagination
+        align="center"
+        defaultCurrent={1}
+        defaultPageSize={4}
+        total={totalPost}
+        onChange={handlePaginationChanged}
+        style={{ position: "absolute", left: "50%", top: "95%" }}
+      />
 
       <CreatePostModal ref={childRef}></CreatePostModal>
     </>

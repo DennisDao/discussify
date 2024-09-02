@@ -41,3 +41,30 @@
     color: #858EAD;
 }
 
+.ant-popover-inner{
+    background: #2C353D !important;
+    color: white !important;
+}
+
+.ant-popconfirm-buttons{
+    display: none;
+}
+
+.ant-popover-arrow::before{
+    background: #2C353D !important;
+}
+
+.ant-list-item-meta-title a{
+    color: white !important;
+}
+
+.ant-list-item-meta-title a:hover{
+    color: #FF4401 !important;
+}
+
+.ant-popover-title{
+    color: #FF4401 !important;
+}
+
+
+

@@ -232,6 +232,16 @@ input ::-moz-placeholder {
   animation: particleAnimation 2s infinite;
 }
 
+.scroll-container {
+  overflow-y: scroll; /* Enables vertical scrolling */
+  scrollbar-width: none; /* Firefox: Hide scrollbar */
+  -ms-overflow-style: none; /* IE and Edge: Hide scrollbar */
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome: Hide scrollbar */
+}
+
 @keyframes particleAnimation {
   0% {
       transform: translate(0, 0);

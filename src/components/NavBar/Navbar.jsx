@@ -1,9 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Navbar.css";
-import { Row, Col, Menu } from "antd";
+import { Row, Col, Menu, Badge } from "antd";
 import useAuthService from "../../service/authService.jsx";
-import { useNavigate } from "react-router-dom";
-import { Avatar, Input, Tooltip, Typography, Button, Flex, Image } from "antd";
+import useApiService from "../../service/apiService.jsx";
+import { Navigate, useNavigate } from "react-router-dom";
+import {
+  Avatar,
+  Input,
+  Tooltip,
+  Typography,
+  Button,
+  Flex,
+  Image,
+  List,
+  Popover,
+} from "antd";
 import {
   ClockCircleOutlined,
   SearchOutlined,
@@ -15,10 +26,52 @@ import {
 } from "@ant-design/icons";
 
 const Navigation = () => {
-  const { logout, getUserName, getAvatar } = useAuthService();
+  const { logout, getUserName, getAvatar, getUserId } = useAuthService();
   const navigate = useNavigate();
-
+  const apiService = useApiService();
   const [query, setQuery] = useState("");
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const notifications = await apiService.get(
+      `http://localhost:6819/api/Notification?userId=${getUserId()}`
+    );
+    setNotifications(notifications);
+  };
+
+  const notificationForMap = () => {
+    const handleNotificationClick = async (notification) => {
+      switch (notification.notificationType) {
+        case "Post":
+          await apiService.post(
+            `http://localhost:6819/api/Notification/SetViewed?notificationId=${notification.notificationId}`
+          );
+          navigate(`/Post/${notification.entityId}`);
+          break;
+        default:
+          break;
+      }
+    };
+
+    return (
+      <List
+        itemLayout="horizontal"
+        dataSource={notifications}
+        renderItem={(notification, index) => (
+          <List.Item
+            onClick={() => handleNotificationClick(notification)}
+            key={index}
+          >
+            <List.Item.Meta title={notification.message} />
+          </List.Item>
+        )}
+      />
+    );
+  };
 
   const items = [
     {
@@ -144,15 +197,23 @@ const Navigation = () => {
             >
               <MessageOutlined />
             </Button>
-            <Button
-              shape="square"
-              size="large"
-              type="text"
-              className="nav-bar-button"
-              style={{ fontSize: "1.5rem" }}
-            >
-              <BellOutlined />
-            </Button>
+
+            <Popover title="Notification" content={notificationForMap()}>
+              <Badge
+                count={notifications.length}
+                style={{ top: "5px", right: "20px" }}
+              >
+                <Button
+                  shape="square"
+                  size="large"
+                  type="text"
+                  className="nav-bar-button"
+                  style={{ fontSize: "1.5rem" }}
+                >
+                  <BellOutlined />
+                </Button>
+              </Badge>
+            </Popover>
 
             <Menu
               style={{
