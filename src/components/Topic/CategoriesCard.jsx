@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Typography, Card } from "antd";
 import Topic from "./Topic.jsx";
 import useApiService from "../../service/apiService.jsx";
+import "./CategoriesCard.css";
 
 const { Text, Link, Title } = Typography;
 
@@ -22,7 +23,7 @@ const CategoriesCard = () => {
   return (
     <>
       <Card style={{ marginTop: 16 }}>
-        <Title level={4} style={{ color: "white", marginBottom: "20px" }}>
+        <Title level={4} className="categorie-title">
           Popular Categories
         </Title>
 

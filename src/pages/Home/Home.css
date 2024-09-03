@@ -1,3 +1,15 @@
+.post-title{
+    color: var(--body_color) !important;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bold 
+}
+
+.post-author-name{
+    color: var(--body_color) !important;
+    font-weight: bold 
+}
+
 .create-post-container{
     align-items: center;
     display: flex;

@@ -9,6 +9,7 @@ import {
   Code,
   Save,
 } from "@mui/icons-material";
+import "./TextEditor.css";
 
 const CodeElement = (props) => {
   return (
@@ -110,9 +111,11 @@ const TextEditor = ({
   return (
     <>
       {showToolBar == true && (
-        <div style={{ display: `flex`, position: "fixed", zIndex: "1" }}>
+        <div
+          style={{ display: `flex`, position: "fixed", zIndex: "1" }}
+          className="text-editor-controls"
+        >
           <IconButton
-            style={{ color: "grey" }}
             onPointerDown={(e) => {
               changeMark("bold");
             }}
@@ -121,7 +124,6 @@ const TextEditor = ({
           </IconButton>
 
           <IconButton
-            style={{ color: "grey" }}
             onPointerDown={(e) => {
               changeMark("italic");
             }}
@@ -130,7 +132,6 @@ const TextEditor = ({
           </IconButton>
 
           <IconButton
-            style={{ color: "grey" }}
             onPointerDown={(e) => {
               changeMark("underline");
             }}
@@ -139,7 +140,6 @@ const TextEditor = ({
           </IconButton>
 
           <IconButton
-            style={{ color: "grey" }}
             onPointerDown={(e) => {
               changeType("code");
             }}
@@ -148,7 +148,6 @@ const TextEditor = ({
           </IconButton>
 
           <IconButton
-            style={{ color: "grey" }}
             onPointerDown={(e) => {
               AddComment();
             }}
@@ -176,13 +175,7 @@ const TextEditor = ({
         <Editable
           onKeyDown={onKeyDown}
           renderLeaf={renderElement}
-          style={{
-            backgroundColor: "#2C353D",
-            minHeight: "100px",
-            outline: "none",
-            color: "#ffffff",
-            marginTop: "40px",
-          }}
+          className="text-editor"
           readOnly={isReadOnly}
         />
       </Slate>

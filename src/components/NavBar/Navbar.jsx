@@ -11,7 +11,6 @@ import {
   Typography,
   Button,
   Flex,
-  Image,
   List,
   Popover,
 } from "antd";
@@ -80,8 +79,7 @@ const Navigation = () => {
           shape="square"
           size="large"
           type="text"
-          className="nav-bar-button navbar-avatar-button"
-          style={{ fontSize: "1rem", color: "#FFFFFF" }}
+          className="nav-bar-button navbar-avatar-button nav-bar-profile-items"
         >
           <Avatar src={getAvatar()} style={{ marginRight: "1rem" }} size={45} />
           <span>{getUserName()}</span>
@@ -91,6 +89,14 @@ const Navigation = () => {
         {
           key: "LOGOUT",
           label: "Logout",
+        },
+        {
+          key: "Light_Theme",
+          label: "Switch to Light Theme",
+        },
+        {
+          key: "Dark_Theme",
+          label: "Switch to Dark Theme",
         },
       ],
     },
@@ -106,6 +112,12 @@ const Navigation = () => {
     switch (item.key) {
       case "LOGOUT":
         logout();
+        break;
+      case "Light_Theme":
+        document.querySelector("body").setAttribute("data-theme", "light");
+        break;
+      case "Dark_Theme":
+        document.querySelector("body").setAttribute("data-theme", "dark");
         break;
     }
   };
@@ -132,7 +144,6 @@ const Navigation = () => {
                 size="large"
                 type="text"
                 className="nav-bar-button"
-                style={{ fontSize: "1.5rem" }}
               >
                 <HomeOutlined />
               </Button>
@@ -141,7 +152,6 @@ const Navigation = () => {
                 size="large"
                 type="text"
                 className="nav-bar-button"
-                style={{ fontSize: "1.5rem" }}
               >
                 <CalendarOutlined />
               </Button>
@@ -150,7 +160,6 @@ const Navigation = () => {
                 size="large"
                 type="text"
                 className="nav-bar-button"
-                style={{ fontSize: "1.5rem" }}
               >
                 <UserOutlined />
               </Button>
@@ -159,7 +168,6 @@ const Navigation = () => {
                 size="large"
                 type="text"
                 className="nav-bar-button"
-                style={{ fontSize: "1.5rem" }}
               >
                 <ClockCircleOutlined />
               </Button>
@@ -178,10 +186,10 @@ const Navigation = () => {
                 title="Search"
                 onClick={() => navigate(`/QuickSearch?query=${query}`)}
               >
-                <SearchOutlined style={{ color: "white" }} />
+                <SearchOutlined />
               </Tooltip>
             }
-            className={"input-dark"}
+            className="discussify-input"
             variant="borderless"
           />
         </Col>
@@ -216,10 +224,7 @@ const Navigation = () => {
             </Popover>
 
             <Menu
-              style={{
-                background: "#262D34",
-                lineHeight: "0px",
-              }}
+              style={{ lineHeight: "0px" }}
               mode="horizontal"
               items={items}
               onClick={handleMenuItemClick}

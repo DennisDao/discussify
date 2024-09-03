@@ -1,17 +1,29 @@
 .create-post-modal .ant-modal-content, .ant-modal-title
 {
-    background: #262D34 !important;
-    color: #858EAD !important;
+    background: var(--body_modal_background) !important;
+    color: var(--body_color) !important;
 }
 
 .ant-select-selector {
-    background: #2C353D !important;
-    border: 1px solid #858EAD !important;
+    background: var(--body_input_background) !important;
+    border: 1px solid var(--body_border_color) !important;
     color: #858EAD !important;
 }
 
+.ant-select-dropdown{
+    background: var(--body_modal_background) !important;
+}
+
+.ant-modal-close-x span{
+    color: var(--body_color) !important;
+}
+
+.ant-select-item-option-content{
+    color: var(--body_color) !important;
+}
+
 .ant-select-arrow{
-    color: #858EAD !important;
+    color: var(--body_color) !important;
 }
 
 .ant-upload-wrapper{
@@ -24,31 +36,21 @@
     color: #858EAD;
 }
 
-.ant-tag{
-   background: #262D34 !important;
-   border: 1px solid #858EAD !important;
-   color: #858EAD;
-}
 
 .ant-tag svg{
-    color: #858EAD;
-}
-
-.ant-input-sm{
-    background: #2C353D !important;
     color: #858EAD;
 }
 
 .ant-modal-footer button:nth-of-type(2)
 {
     background: #FF4401;
-    color: white;
+    color: var(--body_color) !important;
     transition: background-color 0.2s ease;
     transition: transform 0.5s;
 }
 
 .ant-modal-footer button:nth-of-type(2):hover{
-    background: #262D34 !important;
+    background: var(--body_modal_background) !important;
     color: #FF4401 !important;
     border: 1px solid #FF4401;
 }

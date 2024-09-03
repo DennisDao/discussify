@@ -103,23 +103,17 @@ const Home = () => {
                 <Avatar size={50} src={getAvatar()} />
               </Col>
 
-              <Col span={20}>
+              <Col span={20} style={{ marginLeft: 16 }}>
                 <Input
                   size="large"
                   placeholder="Type here to share what's going on in your mind..."
-                  className={"input-dark"}
+                  className="discussify-input"
                   variant="borderless"
-                  style={{ marginLeft: 16 }}
                 />
               </Col>
 
-              <Col>
-                <Button
-                  type="link"
-                  style={{ marginLeft: 16 }}
-                  className="orange-btn"
-                  onClick={openModal}
-                >
+              <Col style={{ marginLeft: 16 }}>
+                <Button type="link" className="orange-btn" onClick={openModal}>
                   Create Post
                 </Button>
               </Col>
@@ -149,12 +143,7 @@ const Home = () => {
                         <Flex justify="space-between" align="center">
                           <Link
                             href={`/Post/${p.postId}`}
-                            style={{
-                              color: "white",
-                              marginBottom: "5px",
-                              fontSize: "20px",
-                              fontWeight: "bold",
-                            }}
+                            className="post-title"
                           >
                             {p.title}
                           </Link>
@@ -200,7 +189,7 @@ const Home = () => {
                             <Flex vertical={true} gap="5px 3px">
                               <Text
                                 type="secondary"
-                                style={{ color: "white", fontWeight: "bold" }}
+                                className="post-author-name"
                               >
                                 {p.authorName} {p.authorLastName}
                               </Text>

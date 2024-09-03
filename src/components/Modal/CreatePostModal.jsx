@@ -210,7 +210,7 @@ const CreatePostModal = forwardRef((props, ref) => {
         <Input
           size="large"
           placeholder="Title"
-          className={"input-dark"}
+          className="discussify-input"
           variant="borderless"
           style={{ marginBottom: "15px" }}
           onChange={(e) => setTitle(e.target.value)}
@@ -218,13 +218,13 @@ const CreatePostModal = forwardRef((props, ref) => {
         <Input
           size="large"
           placeholder="Description"
-          className={"input-dark"}
+          className="discussify-input"
           variant="borderless"
           style={{ marginBottom: "15px" }}
           onChange={(e) => setDescription(e.target.value)}
         />
         <Select
-          size={"large"}
+          size="large"
           defaultValue="Select Category"
           onChange={handleCategoryChange}
           style={{
@@ -239,6 +239,7 @@ const CreatePostModal = forwardRef((props, ref) => {
             <Input
               ref={inputRef}
               type="text"
+              className="discussify-input"
               size="small"
               style={{
                 width: 78,

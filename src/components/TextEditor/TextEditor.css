@@ -1,0 +1,18 @@
+.text-editor{
+    background-color: var(--body_text_editor_background);
+    min-height: 100px;
+    outline: none;
+    color: var(--body_color);
+    margin-top: 10px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.text-editor-main{
+    margin-top: 40px;
+}
+
+.text-editor-controls button{
+    color: var(--body_color);
+}
+

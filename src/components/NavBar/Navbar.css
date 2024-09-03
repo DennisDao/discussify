@@ -1,25 +1,35 @@
 .nav-bar{
-    background: #262D34;
+    background: var(--body_nav_background);
     padding: 20px;
+}
+
+.nav-bar-profile-items{
+    font-size: 1rem;
+    color: var(--body_color);
+}
+
+.nav-bar-profile-items span{
+    font-size: 1rem;
+    color: var(--body_color);
 }
 
 .ant-menu,
 .ant-sub-menu,
 .ant-menu-item{
-    background: #262D34;
-    color: #ffffff !important;
+    background: var(--body_nav_background);
+    color: var(--body_color) !important;
+    border-bottom: 0px;
 }
 
 .ant-menu-item-active,
 .ant-menu,
 .ant-sub-menu,
 .ant-menu-item :hover{
-    background: #262D34 !important;
+    background: var(--body_nav_background) !important;
 }
 
 .ant-menu-submenu::after{
-    border-bottom-width: 0px;
-    border-bottom-color:  #262D34 !important;
+    content: none !important;
 }
 
 .nav-bar-menu-left{
@@ -28,8 +38,9 @@
 }
 
 .nav-bar-button{
-    color: #FFFFFF;
+    color: var(--body_color);
     padding: 0px 15px;
+    font-size: 1.5rem;
 }
 
 .navbar-avatar-button{
@@ -42,8 +53,8 @@
 }
 
 .ant-popover-inner{
-    background: #2C353D !important;
-    color: white !important;
+    background: var(--body_nav_background) !important;
+    color: var(--body_color) !important;
 }
 
 .ant-popconfirm-buttons{
@@ -55,7 +66,7 @@
 }
 
 .ant-list-item-meta-title a{
-    color: white !important;
+    color: var(--body_color);
 }
 
 .ant-list-item-meta-title a:hover{
@@ -67,7 +78,7 @@
 }
 
 .ant-empty-description{
-    color: white !important;
+    color: var(--body_color) !important;
 }
 
 
