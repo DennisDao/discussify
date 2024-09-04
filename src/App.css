@@ -291,4 +291,24 @@ input ::-moz-placeholder {
   100% { transform: translateX(0%) rotate(0deg); }
 }
 
+.element-with-blur {
+  position: relative;
+  overflow: hidden; /* Ensure the pseudo-element stays within bounds */
+}
+
+.element-with-blur::before {
+  content: "";
+  position: absolute;
+  top:-75px;
+  left: 0;
+  right: 0;
+  height: 80px; /* Adjust this value based on how much blur you want */
+  background: transparent;
+  backdrop-filter: blur(50px); /* Adjust the blur intensity */
+  z-index: 10; /* Make sure it sits above the content */
+  opacity: 0.6;
+  border:1px solid red;
+}
+
+
 

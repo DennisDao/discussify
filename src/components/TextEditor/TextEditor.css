@@ -8,11 +8,20 @@
     padding: 10px;
 }
 
-.text-editor-main{
-    margin-top: 40px;
+.text-editor-main
+{
+    background-color: var(--body_text_editor_background);
+    min-height: 100px;
+    outline: none;
+    color: var(--body_color);
+    border-radius: 10px;
+    padding: 10px;
+    overflow-y: scroll;
+    max-height: 140px;
 }
 
 .text-editor-controls button{
     color: var(--body_color);
 }
+
 

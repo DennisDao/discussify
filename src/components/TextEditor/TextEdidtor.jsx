@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Editor, createEditor, Transforms, Text } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { IconButton } from "@mui/material";
@@ -39,9 +39,19 @@ const TextEditor = ({
   showToolBar,
   comment = [],
   onCommentAdded,
+  editorType,
 }) => {
   const [editor] = useState(() => withReact(createEditor()));
   const [comment1, setComment] = useState();
+  const [editorClass, setEditorClass] = useState("");
+
+  useEffect(() => {
+    if (editorType === 1) {
+      setEditorClass("text-editor");
+    } else {
+      setEditorClass("text-editor-main");
+    }
+  }, [editorType]); // This will run whenever editorType changes
 
   function changeMark(mark) {
     const [match] = Editor.nodes(editor, {
@@ -67,7 +77,6 @@ const TextEditor = ({
   }
 
   const AddComment = () => {
-    debugger;
     onCommentAdded(comment1);
   };
 
@@ -111,10 +120,7 @@ const TextEditor = ({
   return (
     <>
       {showToolBar == true && (
-        <div
-          style={{ display: `flex`, position: "fixed", zIndex: "1" }}
-          className="text-editor-controls"
-        >
+        <div style={{ display: `flex` }} className="text-editor-controls">
           <IconButton
             onPointerDown={(e) => {
               changeMark("bold");
@@ -175,7 +181,7 @@ const TextEditor = ({
         <Editable
           onKeyDown={onKeyDown}
           renderLeaf={renderElement}
-          className="text-editor"
+          className={editorClass}
           readOnly={isReadOnly}
         />
       </Slate>

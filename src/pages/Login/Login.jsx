@@ -39,7 +39,7 @@ const Login = () => {
           onChange={(e) => setUsername(e.target.value)}
           size="large"
           placeholder="Email address"
-          className={"input-dark"}
+          className="discussify-input"
           variant="borderless"
           style={{ marginBottom: "15px", width: "400px" }}
         />
@@ -48,7 +48,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           size="large"
           variant="borderless"
-          className={"input-dark"}
+          className="discussify-input"
           placeholder="Password"
           style={{ marginBottom: "15px", width: "400px" }}
           visibilityToggle={{

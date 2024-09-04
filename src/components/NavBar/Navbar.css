@@ -65,8 +65,8 @@
     background: #2C353D !important;
 }
 
-.ant-list-item-meta-title a{
-    color: var(--body_color);
+.ant-list-item-meta-title{
+    color: var(--body_color) !important;
 }
 
 .ant-list-item-meta-title a:hover{

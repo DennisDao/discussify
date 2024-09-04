@@ -102,7 +102,7 @@ const Register = () => {
           onChange={(e) => setEmail(e.target.value)}
           size="large"
           placeholder="Email"
-          className={"input-dark"}
+          className="discussify-input"
           variant="borderless"
           style={{ marginBottom: "15px", width: "400px", marginTop: "30px" }}
         />
@@ -111,7 +111,7 @@ const Register = () => {
           onChange={(e) => setFirstName(e.target.value)}
           size="large"
           placeholder="First name"
-          className={"input-dark"}
+          className="discussify-input"
           variant="borderless"
           style={{ marginBottom: "15px", width: "400px" }}
         />
@@ -120,7 +120,7 @@ const Register = () => {
           onChange={(e) => setLasName(e.target.value)}
           size="large"
           placeholder="Last name"
-          className={"input-dark"}
+          className="discussify-input"
           variant="borderless"
           style={{ marginBottom: "15px", width: "400px" }}
         />
@@ -129,7 +129,7 @@ const Register = () => {
           onChange={(e) => setPassword(e.target.value)}
           size="large"
           variant="borderless"
-          className={"input-dark"}
+          className="discussify-input"
           placeholder="Password"
           style={{ marginBottom: "15px", width: "400px" }}
           visibilityToggle={{
