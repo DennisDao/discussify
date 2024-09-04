@@ -3,7 +3,7 @@ import "./Navbar.css";
 import { Row, Col, Menu, Badge } from "antd";
 import useAuthService from "../../service/authService.jsx";
 import useApiService from "../../service/apiService.jsx";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Input,
@@ -144,6 +144,7 @@ const Navigation = () => {
                 size="large"
                 type="text"
                 className="nav-bar-button"
+                onClick={() => navigate("/")}
               >
                 <HomeOutlined />
               </Button>
@@ -160,6 +161,7 @@ const Navigation = () => {
                 size="large"
                 type="text"
                 className="nav-bar-button"
+                onClick={() => navigate("/Author")}
               >
                 <UserOutlined />
               </Button>

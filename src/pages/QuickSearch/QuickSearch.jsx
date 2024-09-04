@@ -64,7 +64,6 @@ const QuickSearch = () => {
                 </Col>
               </Row>
             </Card>
-            ;
           </>
         );
       })}
