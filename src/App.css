@@ -165,6 +165,11 @@ body{
   color: var(--body_color);
 }
 
+.ant-input-disabled {
+  background: var(--body_input_background);
+  color: var(--body_color) !important;
+}
+
 .input ::-webkit-input-placeholder {
   color: #858EAD !important;
 }
@@ -213,6 +218,20 @@ input ::-moz-placeholder {
 
 .ant-list-item{
   border-block-end: 1px solid var(--body_list_divider_color) !important;
+}
+
+.ant-space-item{
+  color: var(--body_color) !important;
+}
+
+.ant-tabs-tab{
+  color: var(--body_color) !important;
+  background-color: var(--body_input_background) !important;
+  border-radius: 0px !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #FF4401 !important;
 }
 
 .orange-btn{

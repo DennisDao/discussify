@@ -13,7 +13,9 @@ import {
   Tooltip,
   Image,
   Flex,
+  Tag,
   Space,
+  Tabs,
 } from "antd";
 import {
   SearchOutlined,
@@ -26,12 +28,13 @@ import Navigation from "../../components/NavBar/Navbar.jsx";
 import useApiService from "../../service/apiService.jsx";
 
 const { Text, Link, Title } = Typography;
-const count = 3;
-const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
+const count = 1;
 
 const Author = () => {
   const apiService = useApiService();
   const navigate = useNavigate();
+
+  const [items, setItems] = useState([]);
   const [initLoading, setInitLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
@@ -69,8 +72,6 @@ const Author = () => {
         `http://localhost:6819/api/Author/FindAuthor?query=${query}`
       );
 
-      console.log(authors);
-
       setInitLoading(false);
       setData(authors);
       setList(authors);
@@ -105,13 +106,13 @@ const Author = () => {
     );
 
     const newData = data.concat(authors);
-    console.log(newData);
 
     setData(newData);
     setList(newData);
     setLoading(false);
     window.dispatchEvent(new Event("resize"));
   };
+
   const loadMore =
     !initLoading && !loading ? (
       <div
@@ -126,63 +127,95 @@ const Author = () => {
       </div>
     ) : null;
 
+  const authorTab = (
+    <div>
+      <Input
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        defaultActiveKey="1"
+        type="card"
+        size="large"
+        placeholder="Type here to search author..."
+        suffix={
+          <Tooltip title="Search">
+            <SearchOutlined />
+          </Tooltip>
+        }
+        className="discussify-input"
+        variant="borderless"
+      />
+      <List
+        className="demo-loadmore-list"
+        loading={initLoading}
+        itemLayout="horizontal"
+        loadMore={loadMore}
+        dataSource={list}
+        renderItem={(item) => (
+          <List.Item
+            actions={[
+              <IconText
+                icon={UserAddOutlined}
+                text="Follow"
+                key="list-vertical-star-o"
+              />,
+              <IconText
+                icon={StarOutlined}
+                text="12 followers"
+                key="list-vertical-like-o"
+              />,
+            ]}
+          >
+            <Skeleton avatar title={false} loading={item.loading} active>
+              <List.Item.Meta
+                avatar={<Avatar src={item.picture} />}
+                title={
+                  <a onClick={() => handleAuthorClick(item.userId)}>
+                    {item.firstName} {item.lastName}
+                  </a>
+                }
+                description="Just another software developer."
+              />
+            </Skeleton>
+          </List.Item>
+        )}
+      />
+    </div>
+  );
+
+  const tabItems = [
+    {
+      label: "Author",
+      key: "author",
+      children: authorTab,
+    },
+    {
+      label: "My Follower",
+      key: "follower",
+      children: <span>My Followers</span>,
+    },
+    {
+      label: "Im Following",
+      key: "following",
+      children: <span>Im Following</span>,
+    },
+  ];
+
   return (
     <>
       <Navigation></Navigation>
       <Row style={{ padding: "8px" }}>
-        <Col span={8} style={{ padding: "5px" }}>
+        <Col span={8} style={{ padding: "5px", minHeight: "95%" }}>
           <Card>
-            <Input
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
+            <Tabs
+              defaultActiveKey="1"
+              type="card"
               size="large"
-              placeholder="Type here to search author..."
-              suffix={
-                <Tooltip title="Search">
-                  <SearchOutlined />
-                </Tooltip>
-              }
-              className="discussify-input"
-              variant="borderless"
-            />
-            <List
-              className="demo-loadmore-list"
-              loading={initLoading}
-              itemLayout="horizontal"
-              loadMore={loadMore}
-              dataSource={list}
-              renderItem={(item) => (
-                <List.Item
-                  actions={[
-                    <IconText
-                      icon={UserAddOutlined}
-                      text="Follow"
-                      key="list-vertical-star-o"
-                    />,
-                    <IconText
-                      icon={StarOutlined}
-                      text="12 followers"
-                      key="list-vertical-like-o"
-                    />,
-                  ]}
-                >
-                  <Skeleton avatar title={false} loading={item.loading} active>
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.picture} />}
-                      title={
-                        <a onClick={() => handleAuthorClick(item.userId)}>
-                          {item.firstName} {item.lastName}
-                        </a>
-                      }
-                      description="Just another software developer."
-                    />
-                  </Skeleton>
-                </List.Item>
-              )}
+              items={tabItems}
             />
           </Card>
         </Col>
-        <Col span={16} style={{ padding: "5px" }}>
+
+        <Col span={16} style={{ padding: "5px", minHeight: "95%" }}>
           <Card>
             <List
               className="demo-loadmore-list"

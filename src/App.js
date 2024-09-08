@@ -8,6 +8,7 @@ import Register from "./pages/Register/Register.jsx";
 import PrivateRoutes from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import Author from "./pages/Author/Author.jsx";
 import AuthorTest from "./pages/Author/AuthorTest.jsx";
+import Profile from "./pages/Profile/Profile.jsx";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <Route path="/author" element={<Author />} />
             <Route path="/authorTest" element={<AuthorTest />} />
             <Route path="/quicksearch" element={<QuickSearch />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />

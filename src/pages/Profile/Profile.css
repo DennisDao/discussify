@@ -1,0 +1,11 @@
+.avatar-container {
+  padding: 10px;
+  margin: 0px !important;
+  display: flex !important;
+  justify-content: center !important;
+  cursor: pointer;
+}
+
+#profile-image{
+    border-radius: 10px !important;
+}

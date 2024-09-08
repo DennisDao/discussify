@@ -120,8 +120,8 @@ const Post = () => {
 
                 <TextEditor
                   editorType={1}
-                  isReadOnly={true}
-                  showToolBar={false}
+                  isReadOnly={false}
+                  showToolBar={true}
                   comment={comment.comment}
                 ></TextEditor>
               </Card>

@@ -87,16 +87,20 @@ const Navigation = () => {
       ),
       children: [
         {
-          key: "LOGOUT",
-          label: "Logout",
-        },
-        {
           key: "Light_Theme",
           label: "Switch to Light Theme",
         },
         {
           key: "Dark_Theme",
           label: "Switch to Dark Theme",
+        },
+        {
+          key: "PROFILE",
+          label: "Profile",
+        },
+        {
+          key: "LOGOUT",
+          label: "Logout",
         },
       ],
     },
@@ -118,6 +122,9 @@ const Navigation = () => {
         break;
       case "Dark_Theme":
         document.querySelector("body").setAttribute("data-theme", "dark");
+        break;
+      case "PROFILE":
+        navigate("/Profile");
         break;
     }
   };
