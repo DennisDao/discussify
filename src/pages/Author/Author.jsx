@@ -11,15 +11,9 @@ import {
   Card,
   Input,
   Tooltip,
-  Space,
   Tabs,
 } from "antd";
-import {
-  SearchOutlined,
-  UserAddOutlined,
-  StarOutlined,
-  UserDeleteOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import Navigation from "../../components/NavBar/Navbar.jsx";
 import useApiService from "../../service/apiService.jsx";
 import useAuthService from "../../service/authService.jsx";
@@ -37,14 +31,16 @@ const Author = () => {
     pageNumber: 1,
   });
 
-  const [followingAuthor, setFollowingAuthor] = useState(null);
+  const [following, setFollowing] = useState(null);
+  const [followers, setFollowers] = useState(null);
 
   const [query, setQuery] = useState("");
   const [post, setPost] = useState([]);
 
   useEffect(() => {
     fetchAuthors();
-    fetchFollowingAuthors();
+    fetchFollowing();
+    fetchFollowers();
   }, []);
 
   const fetchAuthors = async () => {
@@ -60,11 +56,18 @@ const Author = () => {
     }));
   };
 
-  const fetchFollowingAuthors = async () => {
+  const fetchFollowing = async () => {
     var author = await apiService.get(
-      `http://localhost:6819/api/Author/FollowingAuthors`
+      `http://localhost:6819/api/Author/Following?userId=${getUserId()}`
     );
-    setFollowingAuthor(author);
+    setFollowing(author);
+  };
+
+  const fetchFollowers = async () => {
+    var author = await apiService.get(
+      `http://localhost:6819/api/Author/Followers?userId=${getUserId()}`
+    );
+    setFollowers(author);
   };
 
   const handleSearch = async (event) => {
@@ -95,8 +98,10 @@ const Author = () => {
         fetchAuthors();
         break;
       case "following":
-        fetchFollowingAuthors();
+        fetchFollowing();
         break;
+      case "followers":
+        fetchFollowers();
       default:
         break;
     }
@@ -139,7 +144,7 @@ const Author = () => {
       data
     );
 
-    setFollowingAuthor((prevAuthors) =>
+    setFollowers((prevAuthors) =>
       prevAuthors.filter((author) => author.followerId !== followerId)
     );
   };
@@ -192,9 +197,11 @@ const Author = () => {
                 <div style={{ fontSize: "12px", color: "#888" }}>
                   {item.bio}
                 </div>
-                <div style={{ fontSize: "12px", color: "#888" }}>20 posts</div>
                 <div style={{ fontSize: "12px", color: "#888" }}>
-                  12 Followers
+                  {item.totalPost} posts
+                </div>
+                <div style={{ fontSize: "12px", color: "#888" }}>
+                  {item.totalFollowers} Followers
                 </div>
               </div>
             }
@@ -222,11 +229,21 @@ const Author = () => {
           <List.Item.Meta
             avatar={<Avatar src={item.picture} />}
             title={
-              <a onClick={() => handleAuthorClick(item.userId)}>
-                {item.firstName} {item.lastName}
-              </a>
+              <div>
+                <a onClick={() => handleAuthorClick(item.userId)}>
+                  {item.firstName} {item.lastName}
+                </a>
+                <div style={{ fontSize: "12px", color: "#888" }}>
+                  {item.bio}
+                </div>
+                <div style={{ fontSize: "12px", color: "#888" }}>
+                  {item.totalPost} posts
+                </div>
+                <div style={{ fontSize: "12px", color: "#888" }}>
+                  {item.totalFollowers} Followers
+                </div>
+              </div>
             }
-            description={item.bio}
           />
         </Skeleton>
       </List.Item>
@@ -249,7 +266,7 @@ const Author = () => {
     />
   );
 
-  const authorTabContent = (
+  const authorTab = (
     <div>
       {authorSearchInput}
       <List
@@ -269,12 +286,23 @@ const Author = () => {
     </div>
   );
 
-  const followingAuthorTabContent = (
+  const followingAuthorTab = (
     <div>
       <List
         className="author-list"
         itemLayout="horizontal"
-        dataSource={followingAuthor}
+        dataSource={following}
+        renderItem={renderFollowAuthorItem}
+      />
+    </div>
+  );
+
+  const followersTab = (
+    <div>
+      <List
+        className="author-list"
+        itemLayout="horizontal"
+        dataSource={followers}
         renderItem={renderFollowAuthorItem}
       />
     </div>
@@ -305,16 +333,16 @@ const Author = () => {
   );
 
   const tabItems = [
-    { label: "Author", key: "author", children: authorTabContent },
+    { label: "Author", key: "author", children: authorTab },
     {
       label: "My Follower",
       key: "follower",
-      children: <Text>My Followers</Text>,
+      children: followersTab,
     },
     {
       label: "Im Following",
       key: "following",
-      children: followingAuthorTabContent,
+      children: followingAuthorTab,
     },
   ];
 
