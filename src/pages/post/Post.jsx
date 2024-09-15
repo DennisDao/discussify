@@ -10,13 +10,11 @@ import {
   FloatButton,
   Switch,
 } from "antd";
-import { CommentOutlined, CustomerServiceOutlined } from "@ant-design/icons";
 import TextEditor from "../../components/TextEditor/TextEdidtor.jsx";
 import useApiService from "../../service/apiService";
 import useAuthService from "../../service/authService";
 import Navigation from "../../components/NavBar/Navbar.jsx";
 import "./post.css";
-import zIndex from "@mui/material/styles/zIndex.js";
 
 const { Text, Link, Title } = Typography;
 
@@ -120,8 +118,8 @@ const Post = () => {
 
                 <TextEditor
                   editorType={1}
-                  isReadOnly={false}
-                  showToolBar={true}
+                  isReadOnly={true}
+                  showToolBar={false}
                   comment={comment.comment}
                 ></TextEditor>
               </Card>

@@ -17,6 +17,15 @@ const useApiService = () => {
   const post = async (url, data) => {
     try {
       const response = await axios.post(url, data);
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteResource = async (url, data) => {
+    try {
+      const response = await axios.delete(url, data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -79,6 +88,7 @@ const useApiService = () => {
     get,
     post,
     postFormData,
+    deleteResource,
   };
 };
 

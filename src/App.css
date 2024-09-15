@@ -235,15 +235,17 @@ input ::-moz-placeholder {
 }
 
 .orange-btn{
-  background: #FF4401;
-  color: white;
+  background: var(--body_background);
+  border: 1px solid #FF4401 !important;
+  color: #FF4401;
   transition: background-color 0.2s ease;
   transition: transform 0.5s;
 }
 
 .orange-btn:hover{
-  background: #262D34 !important;
+  background: var(--body_background);
   color: #FF4401 !important;
+  border: 1px solid #FF4401 !important;
 }
 
 .favourite-btn{

@@ -15,7 +15,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import Navigation from "../../components/NavBar/Navbar.jsx";
 
 const { Text, Link, Title } = Typography;
-const count = 3;
+const count = 10;
 const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
 
 const AuthorTest = () => {

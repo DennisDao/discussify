@@ -11,202 +11,321 @@ import {
   Card,
   Input,
   Tooltip,
-  Image,
-  Flex,
-  Tag,
   Space,
   Tabs,
 } from "antd";
 import {
   SearchOutlined,
-  StarOutlined,
-  LikeOutlined,
   UserAddOutlined,
+  StarOutlined,
   UserDeleteOutlined,
 } from "@ant-design/icons";
 import Navigation from "../../components/NavBar/Navbar.jsx";
 import useApiService from "../../service/apiService.jsx";
+import useAuthService from "../../service/authService.jsx";
 
-const { Text, Link, Title } = Typography;
-const count = 1;
+const { Text } = Typography;
 
 const Author = () => {
   const apiService = useApiService();
   const navigate = useNavigate();
+  const { getUserId } = useAuthService();
 
-  const [items, setItems] = useState([]);
-  const [initLoading, setInitLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [authors, setAuthors] = useState({
+    items: [],
+    loading: true,
+    pageNumber: 1,
+  });
+
+  const [followingAuthor, setFollowingAuthor] = useState(null);
+
   const [query, setQuery] = useState("");
-  const [data, setData] = useState([]);
-  const [list, setList] = useState([]);
-  const [pageNumber, setPageNumber] = useState(1);
   const [post, setPost] = useState([]);
 
   useEffect(() => {
-    fetchData();
+    fetchAuthors();
+    fetchFollowingAuthors();
   }, []);
 
-  const fetchData = async () => {
-    const authors = await apiService.get(
-      `http://localhost:6819/api/Author?pageSize=${1}&pageNumber=${pageNumber}`
+  const fetchAuthors = async () => {
+    const newAuthors = await apiService.get(
+      `http://localhost:6819/api/Author?pageSize=10&pageNumber=${
+        authors?.pageNumber || 1
+      }`
     );
-
-    setInitLoading(false);
-    setData(authors);
-    setList(authors);
+    setAuthors((prevState) => ({
+      ...prevState,
+      items: newAuthors,
+      loading: false,
+    }));
   };
 
-  const IconText = ({ icon, text }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
-  );
+  const fetchFollowingAuthors = async () => {
+    var author = await apiService.get(
+      `http://localhost:6819/api/Author/FollowingAuthors`
+    );
+    setFollowingAuthor(author);
+  };
 
-  const handleKeyDown = async (event) => {
+  const handleSearch = async (event) => {
     if (event.key === "Enter") {
-      setLoading(true);
-
-      const authors = await apiService.get(
-        `http://localhost:6819/api/Author/FindAuthor?query=${query}`
-      );
-
-      setInitLoading(false);
-      setData(authors);
-      setList(authors);
+      debugger;
+      if (query === "") {
+        fetchAuthors();
+      } else {
+        setAuthors({ ...authors, loading: true });
+        const searchResult = await apiService.get(
+          `http://localhost:6819/api/Author/FindAuthor?query=${query}`
+        );
+        setAuthors({ items: searchResult, loading: false });
+      }
     }
   };
 
   const handleAuthorClick = async (id) => {
-    debugger;
     const post = await apiService.get(
       `http://localhost:6819/api/Post/User/${id}`
     );
     setPost(post);
   };
 
-  const onLoadMore = async () => {
-    setLoading(true);
-    let newPageNumber = pageNumber + 1;
-    setPageNumber(newPageNumber);
-
-    setList(
-      data.concat(
-        [...new Array(count)].map(() => ({
-          loading: true,
-          name: {},
-          picture: {},
-        }))
-      )
-    );
-
-    const authors = await apiService.get(
-      `http://localhost:6819/api/Author?pageSize=${1}&pageNumber=${newPageNumber}`
-    );
-
-    const newData = data.concat(authors);
-
-    setData(newData);
-    setList(newData);
-    setLoading(false);
-    window.dispatchEvent(new Event("resize"));
+  const handleTabChanged = async (tabName) => {
+    switch (tabName) {
+      case "author":
+        fetchAuthors();
+        break;
+      case "following":
+        fetchFollowingAuthors();
+        break;
+      default:
+        break;
+    }
   };
 
-  const loadMore =
-    !initLoading && !loading ? (
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: 12,
-          height: 32,
-          lineHeight: "32px",
-        }}
-      >
-        <Button onClick={onLoadMore}>loading more</Button>
-      </div>
-    ) : null;
+  const handleFollowAuthorClick = async (followUserId) => {
+    var data = {
+      UserId: getUserId(),
+      FollowingUserId: followUserId,
+    };
 
-  const authorTab = (
-    <div>
-      <Input
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={handleKeyDown}
-        defaultActiveKey="1"
-        type="card"
-        size="large"
-        placeholder="Type here to search author..."
-        suffix={
-          <Tooltip title="Search">
-            <SearchOutlined />
-          </Tooltip>
-        }
-        className="discussify-input"
-        variant="borderless"
-      />
-      <List
-        className="demo-loadmore-list"
-        loading={initLoading}
-        itemLayout="horizontal"
-        loadMore={loadMore}
-        dataSource={list}
-        renderItem={(item) => (
-          <List.Item
-            actions={[
-              <IconText
-                icon={UserAddOutlined}
-                text="Follow"
-                key="list-vertical-star-o"
-              />,
-              <IconText
-                icon={StarOutlined}
-                text="12 followers"
-                key="list-vertical-like-o"
-              />,
-            ]}
+    const response = await apiService.post(
+      `http://localhost:6819/api/Author/FollowAuthor`,
+      data
+    );
+
+    if (response.status == 200) {
+      setAuthors((prevState) => {
+        const updatedItems = prevState.items.map((author) => {
+          if (author.userId === followUserId) {
+            return { ...author, isFollowing: true };
+          }
+          return author;
+        });
+
+        console.log("previus state", prevState.items);
+        console.log("new state", updatedItems);
+
+        return { ...prevState, items: updatedItems };
+      });
+    }
+  };
+
+  const unfollowAuthorClick = async (followerId) => {
+    const data = {
+      FollowerId: followerId,
+    };
+    const response = await apiService.post(
+      `http://localhost:6819/api/Author/DeleteFollower`,
+      data
+    );
+
+    setFollowingAuthor((prevAuthors) =>
+      prevAuthors.filter((author) => author.followerId !== followerId)
+    );
+  };
+
+  const loadMoreAuthors = async () => {
+    const nextPage = authors.pageNumber + 1;
+    setAuthors((prevState) => ({ ...prevState, loading: true }));
+
+    const newAuthors = await apiService.get(
+      `http://localhost:6819/api/Author?pageSize=10&pageNumber=${nextPage}`
+    );
+
+    setAuthors((prevState) => ({
+      items: [...prevState.items, ...newAuthors],
+      pageNumber: nextPage,
+      loading: false,
+    }));
+  };
+
+  const renderAuthorItem = (item) => {
+    const actions = [];
+    if (!item.isFollowing) {
+      actions.push(
+        <Button
+          type="link"
+          className="orange-btn"
+          onClick={() => handleFollowAuthorClick(item.userId)}
+        >
+          Follow
+        </Button>
+      );
+    } else {
+      actions.push(
+        <Button type="link" className="orange-btn">
+          Following
+        </Button>
+      );
+    }
+
+    return (
+      <List.Item actions={actions}>
+        <Skeleton avatar loading={item.loading} active>
+          <List.Item.Meta
+            avatar={<Avatar src={item.picture} />}
+            title={
+              <div>
+                <a onClick={() => handleAuthorClick(item.userId)}>
+                  {item.firstName} {item.lastName}
+                </a>
+                <div style={{ fontSize: "12px", color: "#888" }}>
+                  {item.bio}
+                </div>
+                <div style={{ fontSize: "12px", color: "#888" }}>20 posts</div>
+                <div style={{ fontSize: "12px", color: "#888" }}>
+                  12 Followers
+                </div>
+              </div>
+            }
+          />
+        </Skeleton>
+      </List.Item>
+    );
+  };
+
+  const renderFollowAuthorItem = (item) => {
+    return (
+      <List.Item
+        actions={[
+          <Button
+            type="link"
+            key={item.followerId}
+            className="orange-btn"
+            onClick={() => unfollowAuthorClick(item.followerId)}
           >
-            <Skeleton avatar title={false} loading={item.loading} active>
-              <List.Item.Meta
-                avatar={<Avatar src={item.picture} />}
-                title={
-                  <a onClick={() => handleAuthorClick(item.userId)}>
-                    {item.firstName} {item.lastName}
-                  </a>
-                }
-                description="Just another software developer."
-              />
-            </Skeleton>
-          </List.Item>
-        )}
+            Unfollow
+          </Button>,
+        ]}
+      >
+        <Skeleton avatar loading={item.loading} active>
+          <List.Item.Meta
+            avatar={<Avatar src={item.picture} />}
+            title={
+              <a onClick={() => handleAuthorClick(item.userId)}>
+                {item.firstName} {item.lastName}
+              </a>
+            }
+            description={item.bio}
+          />
+        </Skeleton>
+      </List.Item>
+    );
+  };
+
+  const authorSearchInput = (
+    <Input
+      onChange={(e) => setQuery(e.target.value)}
+      onKeyDown={handleSearch}
+      size="large"
+      placeholder="Search author..."
+      className="discussify-input"
+      suffix={
+        <Tooltip title="Search">
+          <SearchOutlined />
+        </Tooltip>
+      }
+      variant="borderless"
+    />
+  );
+
+  const authorTabContent = (
+    <div>
+      {authorSearchInput}
+      <List
+        className="author-list"
+        loading={authors.loading}
+        itemLayout="horizontal"
+        dataSource={authors.items}
+        renderItem={renderAuthorItem}
+        loadMore={
+          !authors.loading && (
+            <div style={{ textAlign: "center", marginTop: 12 }}>
+              <Button onClick={loadMoreAuthors}>Load more</Button>
+            </div>
+          )
+        }
       />
     </div>
   );
 
+  const followingAuthorTabContent = (
+    <div>
+      <List
+        className="author-list"
+        itemLayout="horizontal"
+        dataSource={followingAuthor}
+        renderItem={renderFollowAuthorItem}
+      />
+    </div>
+  );
+
+  const postListContent = (
+    <List
+      className="post-list"
+      loading={authors.loading}
+      itemLayout="horizontal"
+      dataSource={post}
+      renderItem={(item) => (
+        <List.Item>
+          <Skeleton avatar loading={item.loading} active>
+            <List.Item.Meta
+              avatar={<Avatar src={item.imageUrl} shape="square" size={64} />}
+              title={
+                <a onClick={() => navigate(`/Post/${item.postId}`)}>
+                  {item.title}
+                </a>
+              }
+              description={item.description}
+            />
+          </Skeleton>
+        </List.Item>
+      )}
+    />
+  );
+
   const tabItems = [
-    {
-      label: "Author",
-      key: "author",
-      children: authorTab,
-    },
+    { label: "Author", key: "author", children: authorTabContent },
     {
       label: "My Follower",
       key: "follower",
-      children: <span>My Followers</span>,
+      children: <Text>My Followers</Text>,
     },
     {
       label: "Im Following",
       key: "following",
-      children: <span>Im Following</span>,
+      children: followingAuthorTabContent,
     },
   ];
 
   return (
     <>
-      <Navigation></Navigation>
+      <Navigation />
       <Row style={{ padding: "8px" }}>
-        <Col span={8} style={{ padding: "5px", minHeight: "95%" }}>
+        <Col span={8} style={{ padding: "5px" }}>
           <Card>
             <Tabs
+              onChange={handleTabChanged}
               defaultActiveKey="1"
               type="card"
               size="large"
@@ -214,38 +333,8 @@ const Author = () => {
             />
           </Card>
         </Col>
-
-        <Col span={16} style={{ padding: "5px", minHeight: "95%" }}>
-          <Card>
-            <List
-              className="demo-loadmore-list"
-              loading={initLoading}
-              itemLayout="horizontal"
-              dataSource={post}
-              renderItem={(item) => (
-                <List.Item
-                  actions={[
-                    <a key="list-loadmore-edit">View</a>,
-                    <a key="list-loadmore-more">more</a>,
-                  ]}
-                >
-                  <Skeleton avatar title={false} loading={item.loading} active>
-                    <List.Item.Meta
-                      avatar={
-                        <Avatar src={item.imageUrl} shape="square" size={64} />
-                      }
-                      title={
-                        <a onClick={() => navigate(`/Post/${item.postId}`)}>
-                          {item.title}
-                        </a>
-                      }
-                      description={item.description}
-                    />
-                  </Skeleton>
-                </List.Item>
-              )}
-            />
-          </Card>
+        <Col span={16} style={{ padding: "5px" }}>
+          <Card>{postListContent}</Card>
         </Col>
       </Row>
     </>
