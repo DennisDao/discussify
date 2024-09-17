@@ -74,28 +74,6 @@ const Home = () => {
     <>
       <Navigation></Navigation>
       <Row className="side-feed">
-        <Col span={5} style={{ paddingRight: "15px" }}>
-          <Card style={{ marginTop: 16 }}>
-            <Topic
-              title="Newest and Recent"
-              description="Find the latest update"
-              component={<CommentOutlined style={{ color: "yellow" }} />}
-            />
-            <Topic
-              title="Popular of the day"
-              description="popular threads for the day"
-              component={<OrderedListOutlined style={{ color: "#EEA956" }} />}
-            />
-            <Topic
-              title="Following"
-              description="Explore from your favourite person"
-              component={<UserOutlined style={{ color: "#FF6934" }} />}
-            />
-          </Card>
-
-          <CategoriesCard></CategoriesCard>
-        </Col>
-
         <Col span={19}>
           <Card style={{ marginTop: 16 }} key="create-post-control">
             <Row className="create-post-container">
@@ -237,6 +215,28 @@ const Home = () => {
             })}
           </Row>
         </Col>
+
+        <Col span={5} style={{ paddingLeft: "15px" }}>
+          <Card style={{ marginTop: 16 }}>
+            <Topic
+              title="Newest and Recent"
+              description="Find the latest update"
+              component={<CommentOutlined style={{ color: "yellow" }} />}
+            />
+            <Topic
+              title="Popular of the day"
+              description="popular threads for the day"
+              component={<OrderedListOutlined style={{ color: "#EEA956" }} />}
+            />
+            <Topic
+              title="Following"
+              description="Explore from your favourite person"
+              component={<UserOutlined style={{ color: "#FF6934" }} />}
+            />
+          </Card>
+
+          <CategoriesCard></CategoriesCard>
+        </Col>
       </Row>
 
       <Pagination
@@ -247,7 +247,7 @@ const Home = () => {
         itemBg=""
         itemActiveBg="#FF4401"
         onChange={handlePaginationChanged}
-        style={{ position: "absolute", left: "50%", top: "95%" }}
+        style={{ position: "absolute", left: "40vw", top: "95%" }}
       />
 
       <CreatePostModal ref={childRef}></CreatePostModal>

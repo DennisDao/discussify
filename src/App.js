@@ -9,6 +9,7 @@ import PrivateRoutes from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import Author from "./pages/Author/Author.jsx";
 import AuthorTest from "./pages/Author/AuthorTest.jsx";
 import Profile from "./pages/Profile/Profile.jsx";
+import Activity from "./pages/Activity/Activity.jsx";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/authorTest" element={<AuthorTest />} />
             <Route path="/quicksearch" element={<QuickSearch />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/Activity" element={<Activity />} />
           </Route>
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />

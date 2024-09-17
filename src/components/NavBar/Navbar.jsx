@@ -177,6 +177,7 @@ const Navigation = () => {
                 size="large"
                 type="text"
                 className="nav-bar-button"
+                onClick={() => navigate("/Activity")}
               >
                 <ClockCircleOutlined />
               </Button>
